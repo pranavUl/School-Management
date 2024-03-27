@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class Frame {
     public static void main(String[] args) {
@@ -52,7 +53,27 @@ public class Frame {
         teacherViewSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                //do stuff to get all teachers into an arraylist
+                ArrayList<Teacher> teachers = new ArrayList<Teacher>();
+                teachers.add(new Teacher(125, "jane", "street", null));
+                teachers.add(new Teacher(1251435, "jane", "avenue", null));
+                teachers.add(new Teacher(1263565, "jane", "boulevard", null));
+                teachers.add(new Teacher(165525, "jane", "parkway", null));
+
+                String[] columnNames = {"ID", "First Name", "Last Name", "Sections Taught"};
+
+                Object[][] teachersArray = new Object[teachers.size()][4];
+                Object[] row;
+                for (int i = 0;i < teachers.size(); i++) {
+                    row = new Object[]{(Integer)(teachers.get(i).getID()), teachers.get(i).getFirstName(), teachers.get(i).getLastName(), teachers.get(i).getSections()};
+                    teachersArray[i] = row;
+                }
+
+                JTable table = new JTable(teachersArray, columnNames);
+                table.setBounds(50, 50, 600, 800);
+                JScrollPane sp = new JScrollPane(table);
+                frame.getContentPane().add(sp);
+
             }
         });
 
