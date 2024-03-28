@@ -48,19 +48,26 @@ public class Frame {
         helpMenu.add(aboutSelect);
 
 
-
+        //JLabel titleScreen = new JLabel("welcome to school");
+        //titleScreen.setBounds(400, 475, 200, 50);
+        //frame.getContentPane().add(titleScreen);
 
         teacherViewSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //do stuff to get all teachers into an arraylist
-                ArrayList<Teacher> teachers = new ArrayList<Teacher>();
-                teachers.add(new Teacher(125, "jane", "street", null));
-                teachers.add(new Teacher(1251435, "jane", "avenue", null));
-                teachers.add(new Teacher(1263565, "jane", "boulevard", null));
-                teachers.add(new Teacher(165525, "jane", "parkway", null));
 
-                String[] columnNames = {"ID", "First Name", "Last Name", "Sections Taught"};
+                //frame.removeAll();
+
+                //get all teachers into an arraylist from db later
+                ArrayList<Teacher> teachers = new ArrayList<Teacher>();
+                teachers.add(new Teacher(125, "h", "s", null));
+                teachers.add(new Teacher(1251435, "ja", "ahe", null));
+                teachers.add(new Teacher(1263565, "wt", "rd", null));
+                teachers.add(new Teacher(165525, "pir", "go", null));
+
+
+                //teacher table display
+                String[] columnNames = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
 
                 Object[][] teachersArray = new Object[teachers.size()][4];
                 Object[] row;
@@ -68,11 +75,51 @@ public class Frame {
                     row = new Object[]{(Integer)(teachers.get(i).getID()), teachers.get(i).getFirstName(), teachers.get(i).getLastName(), teachers.get(i).getSections()};
                     teachersArray[i] = row;
                 }
+                JTable teacherTable = new JTable(teachersArray, columnNames);
+                JScrollPane teacherSp = new JScrollPane(teacherTable);
+                teacherSp.setBounds(50, 50, 500, 800);
+                frame.getContentPane().add(teacherSp);
 
-                JTable table = new JTable(teachersArray, columnNames);
-                table.setBounds(50, 50, 600, 800);
-                JScrollPane sp = new JScrollPane(table);
-                frame.getContentPane().add(sp);
+                //do stuff to get all sections into an arraylist
+                ArrayList<Section> sections = new ArrayList<Section>();
+                sections.add(new Section(125, "Math", null, null, null));
+                sections.add(new Section(1251435, "Social Studies", null, null, null));
+
+
+                //sections display
+                String[] columnNames2 = {"Section ID", "Section"};
+
+                Object[][] sectionsArray = new Object[sections.size()][columnNames2.length];
+                for (int i = 0;i < sections.size(); i++) {
+                    row = new Object[]{(Integer)(sections.get(i).getId()), sections.get(i).getName()};
+                    sectionsArray[i] = row;
+                }
+                JTable sectionTable = new JTable(sectionsArray, columnNames2);
+                JScrollPane sectionSp = new JScrollPane(sectionTable);
+                sectionSp.setBounds(600, 50, 350, 300);
+                frame.getContentPane().add(sectionSp);
+
+                //add or remove a teacher
+                JTextField firstName = new JTextField("");
+                JLabel firstNameLabel = new JLabel("First Name: ");
+                JTextField lastName = new JTextField("");
+                JLabel lastNameLabel = new JLabel("Last Name: ");
+                firstName.setBounds(750, 400, 200, 50);
+                lastName.setBounds(750, 475, 200, 50);
+                firstNameLabel.setBounds(600, 400, 125, 50);
+                lastNameLabel.setBounds(600, 475, 125, 50);
+
+                JButton add = new JButton("ADD");
+                JButton delete = new JButton("DELETE");
+                add.setBounds(600, 550, 150, 50);
+                delete.setBounds(800, 550, 150, 50);
+
+                frame.getContentPane().add(firstNameLabel);
+                frame.getContentPane().add(firstName);
+                frame.getContentPane().add(lastNameLabel);
+                frame.getContentPane().add(lastName);
+                frame.getContentPane().add(add);
+                frame.getContentPane().add(delete);
 
             }
         });
