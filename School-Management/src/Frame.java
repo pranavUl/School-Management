@@ -121,8 +121,43 @@ public class Frame {
                 frame.getContentPane().add(add);
                 frame.getContentPane().add(delete);
 
+
+                add.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+        
+                        if (firstName.getText().isEmpty() || lastName.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else {
+                            contactList.add(new Contact(firstName.getText(), lastName.getText(), phone.getText(), address.getText()));
+                            contactList.sort((a, b) ->
+                                    a.getFirstName().compareTo(b.getFirstName())
+                            );
+                            contactList.sort((a, b) ->
+                                    a.getLastName().compareTo(b.getLastName())
+                            );
+                            model.clear();
+                            for (Contact co : contactList) {
+                                model.addElement(co);
+                            }
+                            list.setModel(model);
+                            firstName.setText("");
+                            lastName.setText("");
+                            phone.setText("");
+                            address.setText("");
+                        }
+                    }
+                });
+
+
             }
         });
+
+
+
+        
+
 
         /*JTextField firstName = new JTextField("");
         JLabel firstNameLabel = new JLabel("First Name: ");
@@ -185,35 +220,7 @@ public class Frame {
         frame.getContentPane().add(saveNew);
         frame.getContentPane().add(newB);
         frame.getContentPane().add(saveChanges);
-        frame.getContentPane().add(deleteContact);
-
-        saveNew.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                if (firstName.getText().isEmpty() || lastName.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
-                }
-                else {
-                    contactList.add(new Contact(firstName.getText(), lastName.getText(), phone.getText(), address.getText()));
-                    contactList.sort((a, b) ->
-                            a.getFirstName().compareTo(b.getFirstName())
-                    );
-                    contactList.sort((a, b) ->
-                            a.getLastName().compareTo(b.getLastName())
-                    );
-                    model.clear();
-                    for (Contact co : contactList) {
-                        model.addElement(co);
-                    }
-                    list.setModel(model);
-                    firstName.setText("");
-                    lastName.setText("");
-                    phone.setText("");
-                    address.setText("");
-                }
-            }
-        });*/
+        frame.getContentPane().add(deleteContact);*/
 
         frame.setVisible(true);
 
