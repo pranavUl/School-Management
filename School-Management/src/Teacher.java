@@ -2,20 +2,20 @@ import java.util.ArrayList;
 
 public class Teacher {
 
-    private int ID;
+    private int Id;
     private String firstName;
     private String lastName;
     private ArrayList<Section> sections;
 
     public Teacher(int ID, String firstName, String lastName, ArrayList<Section> sections) {
-        this.ID = ID;
+        this.Id = Id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.sections = sections;
     }
 
-    public int getID() {
-        return ID;
+    public int getId() {
+        return Id;
     }
 
     public String getFirstName() {
@@ -30,8 +30,8 @@ public class Teacher {
         return sections;
     }
 
-    public void setID(int ID) {
-        this.ID = ID;
+    public void setId(int Id) {
+        this.Id = Id;
     }
 
     public void setFirstName(String firstName) {

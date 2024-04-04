@@ -12,6 +12,10 @@ public class Frame {
         frame.setSize(1000 ,1000);
         frame.setLayout(null);
 
+        JPanel teachPanel = new JPanel();
+        teachPanel.setSize(1000 ,1000);
+        teachPanel.setLayout(null);
+
 
         //menu setup
         JMenuBar menuBar = new JMenuBar();
@@ -56,7 +60,7 @@ public class Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //frame.removeAll();
+                //frame.removeAll(); or something
 
                 //get all teachers into an arraylist from db later
                 ArrayList<Object> teachers = new ArrayList<Object>();
@@ -66,15 +70,11 @@ public class Frame {
                 teachers.add(new Teacher(165525, "pir", "go", null));
 
 
-                //**CREATE A NEW METHOD FOR DISPLAYING TABLES TO CONDENSE LATER
-
-
                 //teacher table display
                 String[] columnNamesT = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-                Table teacherTable = new Table(teachers, columnNamesT, new boolean[]{false, true, true, false});
-                JScrollPane teacherSp = new JScrollPane(teacherTable.getTable());
-                teacherSp.setBounds(50, 50, 500, 800);
-                frame.getContentPane().add(teacherSp);
+                JScrollPane teacherTable = (new ScrollingTable(teachers, columnNamesT, new boolean[]{false, true, true, false}, "Teacher")).getSp();
+                teacherTable.setBounds(50, 50, 500, 800);
+                frame.getContentPane().add(teacherTable);
 
 
 
@@ -85,7 +85,7 @@ public class Frame {
 
 
                 //sections display
-                String[] columnNamesSec = {"Section ID", "Section"};
+                /*String[] columnNamesSec = {"Section ID", "Section"};
 
                 Object[][] sectionsArray = new Object[sections.size()][columnNamesSec.length];
                 for (int i = 0;i < sections.size(); i++) {
@@ -95,7 +95,7 @@ public class Frame {
                 JTable sectionTable = new JTable(sectionsArray, columnNamesSec);
                 JScrollPane sectionSp = new JScrollPane(sectionTable);
                 sectionSp.setBounds(600, 50, 350, 300);
-                frame.getContentPane().add(sectionSp);
+                frame.getContentPane().add(sectionSp);*/
 
                 //add or remove a teacher
                 JTextField firstName = new JTextField("");
@@ -150,7 +150,7 @@ public class Frame {
                             Object[][] teachersArray = new Object[teachers.size()][4];
                             Object[] row;
                             for (int i = 0;i < teachers.size(); i++) {
-                                row = new Object[]{(Integer)(teachers.get(i).getID()), teachers.get(i).getFirstName(), teachers.get(i).getLastName(), teachers.get(i).getSections()};
+                                row = new Object[]{((Integer)((Teacher) teachers.get(i)).getID()), ((Teacher) teachers.get(i)).getFirstName(), ((Teacher) teachers.get(i)).getLastName(), ((Teacher) teachers.get(i)).getSections()};
                                 teachersArray[i] = row;
                             }
                             JTable teacherTable = new JTable(teachersArray, columnNamesT);
@@ -162,7 +162,7 @@ public class Frame {
                     }
                 });
 
-                delete.addActionListener(new ActionListener() {
+                /*delete.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
@@ -201,7 +201,7 @@ public class Frame {
 
                         }
                     }
-                });
+                });*/
 
 
             }

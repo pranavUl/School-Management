@@ -1,23 +1,45 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
+import java.util.Objects;
+
+
+//METHODS TO ADD: editRow(int row, Object[] new), updateTable(ArrayList<Object> arraylist, String[] columnNames)
+
+
 
 public class ScrollingTable extends JTable {
     private JTable table;
     private JScrollPane sp;
-    public ScrollingTable(ArrayList<Object> arraylist, String[] columnNames, boolean[] editing) {
-
-        Object[][] array2 = new Object[arraylist.size()][columnNames.length];
+    private Object[][] data;
+    private String[] columnNames;
+    public ScrollingTable(ArrayList<Object> arraylist, String[] cN, boolean[] editing, String type) {
+        columnNames = cN;
+        data = new Object[arraylist.size()][columnNames.length];
         Object[] row;
         for (int i = 0;i < arraylist.size(); i++) {
             row = new Object[columnNames.length];
             //{(Integer)(teachers.get(i).getID()), teachers.get(i).getFirstName(), teachers.get(i).getLastName(), teachers.get(i).getSections()}
 
-
-            for (int k = 0; k < columnNames.length; k++) {
-                row[i] = 
-                array2[i] = row;
+            if (Objects.equals(type, "Teacher")) {
+                row[0] = ((Teacher) arraylist.get(i)).getId();
+                row[1] = ((Teacher) arraylist.get(i)).getFirstName();
+                row[2] = ((Teacher) arraylist.get(i)).getLastName();
+                row[3] = ((Teacher) arraylist.get(i)).getSections();
             }
+
+            else if (Objects.equals(type, "Student")) {
+                row[0] = ((Student) arraylist.get(i)).getId();
+            }
+
+            else if (Objects.equals(type, "Section")) {
+                row[0] = ((Section) arraylist.get(i)).getId();
+            }
+            else if (Objects.equals(type, "Course")) {
+                row[0] = ((Course) arraylist.get(i)).getId();
+            }
+
+            data[i] = row;
 
         }
 
@@ -31,7 +53,7 @@ public class ScrollingTable extends JTable {
         for (String col : columnNames) {
             model.addColumn(col);
         }
-        for (Object[] r : array2) {
+        for (Object[] r : data) {
             model.insertRow(model.getRowCount(), r);
         }
 
@@ -53,5 +75,21 @@ public class ScrollingTable extends JTable {
 
     public void setSp(JScrollPane sp) {
         this.sp = sp;
+    }
+
+    public Object[][] getData() {
+        return data;
+    }
+
+    public void setData(Object[][] data) {
+        this.data = data;
+    }
+
+    public String[] getColumnNames() {
+        return columnNames;
+    }
+
+    public void setColumnNames(String[] columnNames) {
+        this.columnNames = columnNames;
     }
 }
