@@ -79,12 +79,12 @@ public class Frame {
 
 
                 //do stuff to get all sections into an arraylist
-                ArrayList<Section> sections = new ArrayList<Section>();
+                ArrayList<Object> sections = new ArrayList<>();
                 sections.add(new Section(125, "Math", null, null, null));
                 sections.add(new Section(1251435, "Social Studies", null, null, null));
 
 
-                //sections display
+                //old sections display
                 /*String[] columnNamesSec = {"Section ID", "Section"};
 
                 Object[][] sectionsArray = new Object[sections.size()][columnNamesSec.length];
@@ -97,20 +97,28 @@ public class Frame {
                 sectionSp.setBounds(600, 50, 350, 300);
                 frame.getContentPane().add(sectionSp);*/
 
+                JLabel sectionTableLabel = new JLabel("SECTION KEY/LEGEND:");
+                sectionTableLabel.setBounds(600, 50, 350, 25);
+                frame.getContentPane().add(sectionTableLabel);
+                String[] columnNamesSecKey = {"Section ID", "Section"};
+                JScrollPane sectionKeyTable = (new ScrollingTable(sections, columnNamesSecKey, new boolean[]{false, false}, "SectionsTaught")).getSp();
+                sectionKeyTable.setBounds(600, 100, 350, 300);
+                frame.getContentPane().add(sectionKeyTable);
+
                 //add or remove a teacher
                 JTextField firstName = new JTextField("");
                 JLabel firstNameLabel = new JLabel("First Name: ");
                 JTextField lastName = new JTextField("");
                 JLabel lastNameLabel = new JLabel("Last Name: ");
-                firstName.setBounds(750, 400, 200, 50);
-                lastName.setBounds(750, 475, 200, 50);
-                firstNameLabel.setBounds(600, 400, 125, 50);
-                lastNameLabel.setBounds(600, 475, 125, 50);
+                firstName.setBounds(750, 450, 200, 50);
+                lastName.setBounds(750, 525, 200, 50);
+                firstNameLabel.setBounds(600, 450, 125, 50);
+                lastNameLabel.setBounds(600, 525, 125, 50);
 
                 JButton add = new JButton("ADD");
                 JButton delete = new JButton("DELETE");
-                add.setBounds(600, 550, 150, 50);
-                delete.setBounds(800, 550, 150, 50);
+                add.setBounds(600, 600, 150, 50);
+                delete.setBounds(800, 600, 150, 50);
 
                 frame.getContentPane().add(firstNameLabel);
                 frame.getContentPane().add(firstName);
@@ -142,7 +150,7 @@ public class Frame {
                                 model.addElement(co);
                             }
                             list.setModel(model);*/
-                            firstName.setText("");
+                            /*firstName.setText("");
                             lastName.setText("");
 
                             String[] columnNamesT = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
@@ -156,7 +164,7 @@ public class Frame {
                             JTable teacherTable = new JTable(teachersArray, columnNamesT);
                             JScrollPane teacherSp = new JScrollPane(teacherTable);
                             teacherSp.setBounds(50, 50, 500, 800);
-                            frame.getContentPane().add(teacherSp);
+                            frame.getContentPane().add(teacherSp);*/
 
                         }
                     }
