@@ -130,5 +130,8 @@ public class ScrollingTable extends JTable {
         copypaste constructor
         make a new object[][] array based on newarraylist and fill in newarraylist values, then set this.data = newobject[][]array
          */
+
+
+
     }
 }
