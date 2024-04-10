@@ -22,6 +22,7 @@ public class Frame {
         studentPanel.setSize(1000 ,1000);
         studentPanel.setLayout(null);
         teacherPanel.setVisible(false);
+        JScrollPane studentSp = new JScrollPane(studentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         JPanel coursePanel = new JPanel();
         coursePanel.setSize(1000 ,1000);
@@ -237,7 +238,7 @@ public class Frame {
                 aboutPanel.setVisible(false);
                 studentPanel.setVisible(true);
 
-                //test schedule
+                //test schedule1
                 ArrayList<Object> schedule1 = new ArrayList<Object>();
                 schedule1.add(new Course(134512, "Calculus BC", "AP"));
                 schedule1.add(new Course(134565, "US History", "AP"));
@@ -247,14 +248,37 @@ public class Frame {
                 schedule1.add(new Course(652645, "English Language and Composition", "AP"));
                 schedule1.add(new Course(652454, "Statistics", "AP"));
 
+                //test schedule2
+                ArrayList<Object> schedule2 = new ArrayList<Object>();
+                schedule2.add(new Course(134512, "Calculus BC", "AP"));
+                schedule2.add(new Course(134565, "Chemistry", "KAP"));
+                schedule2.add(new Course(654665, "Seminar", "AP"));
+                schedule2.add(new Course(153655, "Statistics", "Academic"));
+                schedule2.add(new Course(652622, "Physics 1", "AP"));
+                schedule2.add(new Course(652645, "English II", "KAP"));
+                schedule2.add(new Course(652454, "Tennis", "Academic"));
+
                 //get all Student into an arraylist from db later
                 ArrayList<Object> students = new ArrayList<Object>();
-                students.add(new Student(125, "hstudent", "syes", schedule1));
-                students.add(new Student(1251435, "ja", "ahsdfhhe", null));
-                students.add(new Student(1263565, "wt", "hrd", null));
-                students.add(new Student(165525, "pir", "go", null));
+                students.add(new Student(125, "billy", "willy", schedule1));
+                students.add(new Student(1251435, "nilly", "nilly", schedule1));
+                students.add(new Student(1263565, "bob", "joe", schedule2));
+                students.add(new Student(165525, "pete", "hi", schedule2));
 
+                int startingY = 50;
 
+                for(int i = 0; i < students.size(); i++) {
+
+                    String[] columnNamesT = {"Student ID", "First Name", "Last Name"};
+                    ArrayList<Object> data = new ArrayList<Object>();
+                    data.add(((Student) students.get(i)));
+                    JScrollPane studentTable = (new ScrollingTable(data, columnNamesT, new boolean[]{false, true, true}, "Student3")).getSp();
+                    studentTable.setBounds(50, startingY, 300, 39);
+                    studentPanel.add(studentTable);
+
+                    startingY = startingY + 289;
+
+                }
 
 
 
@@ -265,16 +289,16 @@ public class Frame {
 
 
                 //Student table display
-                String[] columnNamesT = {"Course ID", "Course", "Level"};
-                JScrollPane studentTable = (new ScrollingTable(schedule1, columnNamesT, new boolean[]{false, true, true}, "Course")).getSp();
-                studentTable.setBounds(50, 50, 500, 800);
-                studentPanel.add(studentTable);
+                //String[] columnNamesT = {"Course ID", "Course", "Level"};
+                //JScrollPane studentTable = (new ScrollingTable(schedule1, columnNamesT, new boolean[]{false, true, true}, "Course")).getSp();
+                //studentTable.setBounds(50, 50, 500, 800);
+                //studentPanel.add(studentTable);
 
 
 
                 //need to add schedule
 
-
+                /*
                 //add or remove a student
                 JTextField firstName = new JTextField("");
                 JLabel firstNameLabel = new JLabel("First Name: ");
@@ -295,10 +319,10 @@ public class Frame {
                 studentPanel.add(lastNameLabel);
                 studentPanel.add(lastName);
                 studentPanel.add(add);
-                studentPanel.add(delete);
+                studentPanel.add(delete);*/
 
 
-                add.addActionListener(new ActionListener() {
+                /*add.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
@@ -306,7 +330,7 @@ public class Frame {
                             JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
                         }
                         else {
-                            students.add(new Teacher(410243 /*sql id*/, firstName.getText(), lastName.getText(), null));
+                            students.add(new Teacher(410243, firstName.getText(), lastName.getText(), null));
                             /* ***alphabetize from rolodex***
                             contactList.sort((a, b) ->
 
@@ -334,7 +358,7 @@ public class Frame {
                             JTable teacherTable = new JTable(teachersArray, columnNamesT);
                             JScrollPane teacherSp = new JScrollPane(teacherTable);
                             teacherSp.setBounds(50, 50, 500, 800);
-                            frame.getContentPane().add(teacherSp);*/
+                            frame.getContentPane().add(teacherSp);
 
                         }
                     }
@@ -381,7 +405,7 @@ public class Frame {
                     }
                 });*/
 
-
+                frame.getContentPane().add(studentSp);
             }
         });
 

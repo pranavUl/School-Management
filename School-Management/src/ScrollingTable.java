@@ -31,11 +31,17 @@ public class ScrollingTable extends JTable {
                 row[3] = ((Teacher) arraylist.get(i)).getSections();
             }
 
-            else if (Objects.equals(type, "Student")) {
+            else if (Objects.equals(type, "StudentFull")) {
                 row[0] = ((Student) arraylist.get(i)).getId();
                 row[1] = ((Student) arraylist.get(i)).getFirstName();
                 row[2] = ((Student) arraylist.get(i)).getLastName();
                 row[3] = ((Student) arraylist.get(i)).getSchedule();
+            }
+
+            else if (Objects.equals(type, "Student3")) {
+                row[0] = ((Student) arraylist.get(i)).getId();
+                row[1] = ((Student) arraylist.get(i)).getFirstName();
+                row[2] = ((Student) arraylist.get(i)).getLastName();
             }
 
             else if (Objects.equals(type, "Section")) {

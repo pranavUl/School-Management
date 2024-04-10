@@ -5,9 +5,9 @@ public class Student {
     private int id;
     private String firstName;
     private String lastName;
-    private ArrayList<Course> schedule;
+    private ArrayList<Object> schedule;
 
-    public Student(int id, String firstName, String lastName, ArrayList<Course> schedule) {
+    public Student(int id, String firstName, String lastName, ArrayList<Object> schedule) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -38,11 +38,16 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public ArrayList<Course> getSchedule() {
+    public ArrayList<Object> getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(ArrayList<Course> schedule) {
+    public void setSchedule(ArrayList<Object> schedule) {
         this.schedule = schedule;
+    }
+
+    @Override
+    public String toString() {
+        return this.lastName + ", " + this.firstName + " (" + this.id + ")";
     }
 }
