@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Frame {
@@ -15,18 +16,27 @@ public class Frame {
         JPanel teacherPanel = new JPanel();
         teacherPanel.setSize(1000 ,1000);
         teacherPanel.setLayout(null);
+        teacherPanel.setVisible(false);
 
         JPanel studentPanel = new JPanel();
         studentPanel.setSize(1000 ,1000);
         studentPanel.setLayout(null);
+        teacherPanel.setVisible(false);
 
         JPanel coursePanel = new JPanel();
         coursePanel.setSize(1000 ,1000);
         coursePanel.setLayout(null);
+        teacherPanel.setVisible(false);
 
         JPanel sectionPanel = new JPanel();
         sectionPanel.setSize(1000 ,1000);
         sectionPanel.setLayout(null);
+        teacherPanel.setVisible(false);
+
+        JPanel aboutPanel = new JPanel();
+        sectionPanel.setSize(1000 ,1000);
+        sectionPanel.setLayout(null);
+        teacherPanel.setVisible(false);
 
 
         //menu setup
@@ -75,6 +85,8 @@ public class Frame {
                 studentPanel.setVisible(false);
                 sectionPanel.setVisible(false);
                 coursePanel.setVisible(false);
+                aboutPanel.setVisible(false);
+                teacherPanel.setVisible(true);
 
                 //get all teachers into an arraylist from db later
                 ArrayList<Object> teachers = new ArrayList<Object>();
@@ -222,24 +234,45 @@ public class Frame {
                 teacherPanel.setVisible(false);
                 sectionPanel.setVisible(false);
                 coursePanel.setVisible(false);
+                aboutPanel.setVisible(false);
+                studentPanel.setVisible(true);
+
+                //test schedule
+                ArrayList<Object> schedule1 = new ArrayList<Object>();
+                schedule1.add(new Course(134512, "Calculus BC", "AP"));
+                schedule1.add(new Course(134565, "US History", "AP"));
+                schedule1.add(new Course(654665, "Computer Science A", "AP"));
+                schedule1.add(new Course(153655, "Band", "Academic"));
+                schedule1.add(new Course(652622, "Physics 1", "AP"));
+                schedule1.add(new Course(652645, "English Language and Composition", "AP"));
+                schedule1.add(new Course(652454, "Statistics", "AP"));
 
                 //get all Student into an arraylist from db later
                 ArrayList<Object> students = new ArrayList<Object>();
-                students.add(new Student(125, "hstudent", "syes", null));
+                students.add(new Student(125, "hstudent", "syes", schedule1));
                 students.add(new Student(1251435, "ja", "ahsdfhhe", null));
                 students.add(new Student(1263565, "wt", "hrd", null));
                 students.add(new Student(165525, "pir", "go", null));
 
 
+
+
+
+
+
+
+
+
+
                 //Student table display
-                String[] columnNamesT = {"Student ID", "First Name", "Last Name", "Schedule"};
-                JScrollPane studentTable = (new ScrollingTable(students, columnNamesT, new boolean[]{false, true, true, false}, "Teacher")).getSp();
+                String[] columnNamesT = {"Course ID", "Course", "Level"};
+                JScrollPane studentTable = (new ScrollingTable(schedule1, columnNamesT, new boolean[]{false, true, true}, "Course")).getSp();
                 studentTable.setBounds(50, 50, 500, 800);
                 studentPanel.add(studentTable);
 
 
 
-                //need to add schedule!
+                //need to add schedule
 
 
                 //add or remove a student
@@ -352,9 +385,50 @@ public class Frame {
             }
         });
 
+        sectionViewSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.setVisible(false);
+                sectionPanel.setVisible(true);
+                coursePanel.setVisible(false);
+                studentPanel.setVisible(false);
+                aboutPanel.setVisible(false);
+            }
+        });
+
+        courseViewSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.setVisible(false);
+                sectionPanel.setVisible(false);
+                coursePanel.setVisible(true);
+                studentPanel.setVisible(false);
+                aboutPanel.setVisible(false);
+            }
+        });
+
+        aboutSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                teacherPanel.setVisible(false);
+                sectionPanel.setVisible(false);
+                coursePanel.setVisible(false);
+                studentPanel.setVisible(false);
+
+                JLabel versionsAndMakes = new JLabel("school version 1.3 | created by pranav ullas");
+                versionsAndMakes.setBounds(400, 450, 200, 50);
+                aboutPanel.add(versionsAndMakes);
+
+                aboutPanel.setVisible(true);
+            }
+        });
+
 
         frame.getContentPane().add(teacherPanel);
         frame.getContentPane().add(studentPanel);
+        frame.getContentPane().add(coursePanel);
+        frame.getContentPane().add(sectionPanel);
+        frame.getContentPane().add(aboutPanel);
         frame.setVisible(true);
 
     }

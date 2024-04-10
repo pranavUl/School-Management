@@ -1,8 +1,17 @@
+import java.util.ArrayList;
+
 public class Course {
 
     private int id;
     private String name;
     private String type;
+
+    private ArrayList<Course> masterCourseList;
+
+    public Course(String name, String type) {
+        this.name = name;
+        this.type = type;
+    }
 
     public Course(int id, String name, String type) {
         this.id = id;
