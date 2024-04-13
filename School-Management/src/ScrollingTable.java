@@ -9,12 +9,14 @@ import java.util.Objects;
 
 
 public class ScrollingTable extends JTable {
+    
     private JTable table;
     private JScrollPane sp;
     private Object[][] data;
     private String[] columnNames;
     private boolean[] editables;
     private String type;
+    
     public ScrollingTable(ArrayList<Object> arraylist, String[] cN, boolean[] editing, String type) {
         this.type = type;
         this.columnNames = cN;
@@ -22,7 +24,6 @@ public class ScrollingTable extends JTable {
         Object[] row;
         for (int i = 0;i < arraylist.size(); i++) {
             row = new Object[columnNames.length];
-            //{(Integer)(teachers.get(i).getID()), teachers.get(i).getFirstName(), teachers.get(i).getLastName(), teachers.get(i).getSections()}
 
             if (Objects.equals(type, "Teacher")) {
                 row[0] = ((Teacher) arraylist.get(i)).getId();
@@ -31,31 +32,8 @@ public class ScrollingTable extends JTable {
                 row[3] = ((Teacher) arraylist.get(i)).getSections();
             }
 
-            else if (Objects.equals(type, "StudentFull")) {
-                row[0] = ((Student) arraylist.get(i)).getId();
-                row[1] = ((Student) arraylist.get(i)).getFirstName();
-                row[2] = ((Student) arraylist.get(i)).getLastName();
-                row[3] = ((Student) arraylist.get(i)).getSchedule();
-            }
-
-            else if (Objects.equals(type, "Student3")) {
-                row[0] = ((Student) arraylist.get(i)).getId();
-                row[1] = ((Student) arraylist.get(i)).getFirstName();
-                row[2] = ((Student) arraylist.get(i)).getLastName();
-            }
-
-            else if (Objects.equals(type, "Section")) {
-                row[0] = ((Section) arraylist.get(i)).getId();
-                row[1] = ((Section) arraylist.get(i)).getCourses();
-                row[2] = ((Section) arraylist.get(i)).getTeachers();
-            }
-            else if (Objects.equals(type, "Course")) {
-                row[0] = ((Course) arraylist.get(i)).getId();
-                row[1] = ((Course) arraylist.get(i)).getName();
-                row[2] = ((Course) arraylist.get(i)).getType();
-            }
             else if (Objects.equals(type, "SectionsTaught")) { //for Teacher view
-                row[0] = ((Section) arraylist.get(i)).getId();
+                /*row[0] = ((Section) arraylist.get(i)).getId();
                 StringBuilder courses = new StringBuilder();
                 if (((Section) arraylist.get(i)).getCourses() != null) {
                     for (int k = 0; k < ((Section) arraylist.get(i)).getCourses().size(); k++) {
@@ -65,8 +43,25 @@ public class ScrollingTable extends JTable {
                 }
                 else {
                     row[1] = "";
-                }
+                }*/
             }
+
+            else if (Objects.equals(type, "Student")) {
+                row[0] = ((Student) arraylist.get(i)).getId();
+                row[1] = ((Student) arraylist.get(i)).getFirstName();
+                row[2] = ((Student) arraylist.get(i)).getLastName();
+            }
+
+            else if (Objects.equals(type, "Schedule")) {
+                
+            }
+
+            else if (Objects.equals(type, "Section")) {
+                /*row[0] = ((Section) arraylist.get(i)).getId();
+                row[1] = ((Section) arraylist.get(i)).getCourses();
+                row[2] = ((Section) arraylist.get(i)).getTeachers();*/
+            }
+
             else if (Objects.equals(type, "Roster")) { // for Section
                 row[0] = ((Student) arraylist.get(i)).getId();
                 row[1] = ((Student) arraylist.get(i)).getFirstName();
@@ -74,6 +69,12 @@ public class ScrollingTable extends JTable {
 
                 //NEED TO ADD ROSTER SORTER
 
+            }
+
+            else if (Objects.equals(type, "Course")) {
+                row[0] = ((Course) arraylist.get(i)).getId();
+                row[1] = ((Course) arraylist.get(i)).getName();
+                row[2] = ((Course) arraylist.get(i)).getType();
             }
 
             data[i] = row;
@@ -129,15 +130,5 @@ public class ScrollingTable extends JTable {
 
     public void setColumnNames(String[] columnNames) {
         this.columnNames = columnNames;
-    }
-
-    public void updateScrollingTable(ArrayList<Object> newArrayList) {
-        /*
-        copypaste constructor
-        make a new object[][] array based on newarraylist and fill in newarraylist values, then set this.data = newobject[][]array
-         */
-
-
-
     }
 }

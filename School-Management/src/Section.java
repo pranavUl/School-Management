@@ -1,27 +1,13 @@
-import java.util.ArrayList;
-
 public class Section {
 
-    private int id;
-    private String name;
-    private ArrayList<Course> courses;
-    private ArrayList<Teacher> teachers;
-    private ArrayList<Student> students;
-
-    public Section(int id, String name, ArrayList<Course> courses, ArrayList<Teacher> teachers, ArrayList<Student> students) {
+    private int id;;
+    private int cID;
+    private int tID;
+    
+    public Section(int id, int cID, int tID) {
         this.id = id;
-        this.name = name;
-        this.courses = courses;
-        this.teachers = teachers;
-        this.students = students;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+        this.cID = cID;
+        this.tID = tID;
     }
 
     public int getId() {
@@ -32,27 +18,20 @@ public class Section {
         this.id = id;
     }
 
-    public ArrayList<Course> getCourses() {
-        return courses;
+    public int getcID() {
+        return cID;
     }
 
-    public void setCourses(ArrayList<Course> courses) {
-        this.courses = courses;
+    public void setcID(int cID) {
+        this.cID = cID;
     }
 
-    public ArrayList<Teacher> getTeachers() {
-        return teachers;
+    public int gettID() {
+        return tID;
     }
 
-    public void setTeachers(ArrayList<Teacher> teachers) {
-        this.teachers = teachers;
+    public void settID(int tID) {
+        this.tID = tID;
     }
-
-    public ArrayList<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(ArrayList<Student> students) {
-        this.students = students;
-    }
+    
 }

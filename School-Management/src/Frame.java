@@ -22,7 +22,6 @@ public class Frame {
         studentPanel.setSize(1000 ,1000);
         studentPanel.setLayout(null);
         teacherPanel.setVisible(false);
-        JScrollPane studentSp = new JScrollPane(studentPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         JPanel coursePanel = new JPanel();
         coursePanel.setSize(1000 ,1000);
@@ -89,7 +88,8 @@ public class Frame {
                 aboutPanel.setVisible(false);
                 teacherPanel.setVisible(true);
 
-                //get all teachers into an arraylist from db later
+                //get all teachers into an arraylist from db later here
+
                 ArrayList<Object> teachers = new ArrayList<Object>();
                 teachers.add(new Teacher(125, "h", "s", null));
                 teachers.add(new Teacher(1251435, "ja", "ahe", null));
@@ -97,26 +97,26 @@ public class Frame {
                 teachers.add(new Teacher(165525, "pir", "go", null));
 
 
-                //teacher table display
-                String[] columnNamesT = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-                JScrollPane teacherTable = (new ScrollingTable(teachers, columnNamesT, new boolean[]{false, true, true, false}, "Teacher")).getSp();
+                String[] columnNames = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
+                JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true, false}, "Teacher")).getSp();
                 teacherTable.setBounds(50, 50, 500, 800);
                 teacherPanel.add(teacherTable);
 
 
 
-                //do stuff to get all sections into an arraylist
-                ArrayList<Object> sections = new ArrayList<>();
+                //REDO LATER TO DISPLAY SECTIONS BY: SECTIONID, COURSE TITLE
+                /*ArrayList<Object> sections = new ArrayList<>();
                 sections.add(new Section(125, "Math", null, null, null));
                 sections.add(new Section(1251435, "Social Studies", null, null, null));
 
                 JLabel sectionTableLabel = new JLabel("SECTION KEY/LEGEND:");
                 sectionTableLabel.setBounds(600, 50, 350, 25);
                 teacherPanel.add(sectionTableLabel);
+                
                 String[] columnNamesSecKey = {"Section ID", "Section"};
                 JScrollPane sectionKeyTable = (new ScrollingTable(sections, columnNamesSecKey, new boolean[]{false, false}, "SectionsTaught")).getSp();
                 sectionKeyTable.setBounds(600, 100, 350, 300);
-                teacherPanel.add(sectionKeyTable);
+                teacherPanel.add(sectionKeyTable);*/
 
                 //add or remove a teacher
                 JTextField firstName = new JTextField("");
@@ -150,40 +150,20 @@ public class Frame {
                         }
                         else {
                             teachers.add(new Teacher(410243 /*sql id*/, firstName.getText(), lastName.getText(), null));
-                            /* ***alphabetize from rolodex***
-                            contactList.sort((a, b) ->
-
-                                    a.getFirstName().compareTo(b.getFirstName())
-                            );
-                            contactList.sort((a, b) ->
-                                    a.getLastName().compareTo(b.getLastName())
-                            );
-                            model.clear();
-                            for (Contact co : contactList) {
-                                model.addElement(co);
-                            }
-                            list.setModel(model);*/
-                            /*firstName.setText("");
+            
+                            firstName.setText("");
                             lastName.setText("");
 
-                            String[] columnNamesT = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-
-                            Object[][] teachersArray = new Object[teachers.size()][4];
-                            Object[] row;
-                            for (int i = 0;i < teachers.size(); i++) {
-                                row = new Object[]{((Integer)((Teacher) teachers.get(i)).getID()), ((Teacher) teachers.get(i)).getFirstName(), ((Teacher) teachers.get(i)).getLastName(), ((Teacher) teachers.get(i)).getSections()};
-                                teachersArray[i] = row;
-                            }
-                            JTable teacherTable = new JTable(teachersArray, columnNamesT);
-                            JScrollPane teacherSp = new JScrollPane(teacherTable);
-                            teacherSp.setBounds(50, 50, 500, 800);
-                            frame.getContentPane().add(teacherSp);*/
+                            String[] columnNames = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
+                            JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true, false}, "Teacher")).getSp();
+                            teacherTable.setBounds(50, 50, 500, 800);
+                            teacherPanel.add(teacherTable);
 
                         }
                     }
                 });
 
-                /*delete.addActionListener(new ActionListener() {
+                delete.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
@@ -194,7 +174,7 @@ public class Frame {
 
                             boolean found = false;
                             for (int i = teachers.size() - 1; i >=0; i--) {
-                                if(teachers.get(i).getFirstName().equals(firstName.getText()) && teachers.get(i).getLastName().equals(lastName.getText())) {
+                                if(((Teacher) teachers.get(i)).getFirstName().equals(firstName.getText()) && ((Teacher) teachers.get(i)).getLastName().equals(lastName.getText())) {
                                     teachers.remove(teachers.get(i));
                                     found = true;
                                 }
@@ -207,22 +187,13 @@ public class Frame {
                             firstName.setText("");
                             lastName.setText("");
 
-                            String[] columnNamesT = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-
-                            Object[][] teachersArray = new Object[teachers.size()][4];
-                            Object[] row;
-                            for (int i = 0;i < teachers.size(); i++) {
-                                row = new Object[]{(Integer)(teachers.get(i).getID()), teachers.get(i).getFirstName(), teachers.get(i).getLastName(), teachers.get(i).getSections()};
-                                teachersArray[i] = row;
-                            }
-                            JTable teacherTable = new JTable(teachersArray, columnNamesT);
-                            JScrollPane teacherSp = new JScrollPane(teacherTable);
-                            teacherSp.setBounds(50, 50, 500, 800);
-                            frame.getContentPane().add(teacherSp);
-
+                            String[] columnNames = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
+                            JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true, false}, "Teacher")).getSp();
+                            teacherTable.setBounds(50, 50, 500, 800);
+                            teacherPanel.add(teacherTable);
                         }
                     }
-                });*/
+                });
 
 
             }
@@ -258,6 +229,16 @@ public class Frame {
                 schedule2.add(new Course(652645, "English II", "KAP"));
                 schedule2.add(new Course(652454, "Tennis", "Academic"));
 
+                //test schedule3
+                ArrayList<Object> schedule3 = new ArrayList<Object>();
+                schedule2.add(new Course(134512, "Calculus BC", "AP"));
+                schedule2.add(new Course(134565, "Chemistry", "KAP"));
+                schedule2.add(new Course(654665, "Seminar", "AP"));
+                schedule2.add(new Course(153655, "Statistics", "Academic"));
+                schedule2.add(new Course(652622, "Physics 1", "AP"));
+                schedule2.add(new Course(652645, "English II", "KAP"));
+                schedule2.add(new Course(652454, "Tennis", "Academic"));
+
                 //get all Student into an arraylist from db later
                 ArrayList<Object> students = new ArrayList<Object>();
                 students.add(new Student(125, "billy", "willy", schedule1));
@@ -265,147 +246,19 @@ public class Frame {
                 students.add(new Student(1263565, "bob", "joe", schedule2));
                 students.add(new Student(165525, "pete", "hi", schedule2));
 
-                int startingY = 50;
-
-                for(int i = 0; i < students.size(); i++) {
-
-                    String[] columnNamesT = {"Student ID", "First Name", "Last Name"};
-                    ArrayList<Object> data = new ArrayList<Object>();
-                    data.add(((Student) students.get(i)));
-                    JScrollPane studentTable = (new ScrollingTable(data, columnNamesT, new boolean[]{false, true, true}, "Student3")).getSp();
-                    studentTable.setBounds(50, startingY, 300, 39);
-                    studentPanel.add(studentTable);
-
-                    startingY = startingY + 289;
-
-                }
+                String[] columnNames = {"Student ID", "First Name", "Last Name"};
+                JScrollPane studentTable = (new ScrollingTable(students, columnNames, new boolean[]{false, true, true}, "Student")).getSp();
+                studentTable.setBounds(50, 50, 400, 600);
+                studentPanel.add(studentTable);
 
 
 
+                String[] columnNames2 = {"Section ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
+                JScrollPane scheduleTable = (new ScrollingTable(students, columnNames2, new boolean[]{false, false, false, false, false}, "Schedule")).getSp();
+                scheduleTable.setBounds(500, 50, 450, 400);
+                studentPanel.add(scheduleTable);
 
-
-
-
-
-
-                //Student table display
-                //String[] columnNamesT = {"Course ID", "Course", "Level"};
-                //JScrollPane studentTable = (new ScrollingTable(schedule1, columnNamesT, new boolean[]{false, true, true}, "Course")).getSp();
-                //studentTable.setBounds(50, 50, 500, 800);
-                //studentPanel.add(studentTable);
-
-
-
-                //need to add schedule
-
-                /*
-                //add or remove a student
-                JTextField firstName = new JTextField("");
-                JLabel firstNameLabel = new JLabel("First Name: ");
-                JTextField lastName = new JTextField("");
-                JLabel lastNameLabel = new JLabel("Last Name: ");
-                firstName.setBounds(750, 450, 200, 50);
-                lastName.setBounds(750, 525, 200, 50);
-                firstNameLabel.setBounds(600, 450, 125, 50);
-                lastNameLabel.setBounds(600, 525, 125, 50);
-
-                JButton add = new JButton("ADD");
-                JButton delete = new JButton("DELETE");
-                add.setBounds(600, 600, 150, 50);
-                delete.setBounds(800, 600, 150, 50);
-
-                studentPanel.add(firstNameLabel);
-                studentPanel.add(firstName);
-                studentPanel.add(lastNameLabel);
-                studentPanel.add(lastName);
-                studentPanel.add(add);
-                studentPanel.add(delete);*/
-
-
-                /*add.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-
-                        if (firstName.getText().isEmpty() || lastName.getText().isEmpty()) {
-                            JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        else {
-                            students.add(new Teacher(410243, firstName.getText(), lastName.getText(), null));
-                            /* ***alphabetize from rolodex***
-                            contactList.sort((a, b) ->
-
-                                    a.getFirstName().compareTo(b.getFirstName())
-                            );
-                            contactList.sort((a, b) ->
-                                    a.getLastName().compareTo(b.getLastName())
-                            );
-                            model.clear();
-                            for (Contact co : contactList) {
-                                model.addElement(co);
-                            }
-                            list.setModel(model);*/
-                            /*firstName.setText("");
-                            lastName.setText("");
-
-                            String[] columnNamesT = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-
-                            Object[][] teachersArray = new Object[teachers.size()][4];
-                            Object[] row;
-                            for (int i = 0;i < teachers.size(); i++) {
-                                row = new Object[]{((Integer)((Teacher) teachers.get(i)).getID()), ((Teacher) teachers.get(i)).getFirstName(), ((Teacher) teachers.get(i)).getLastName(), ((Teacher) teachers.get(i)).getSections()};
-                                teachersArray[i] = row;
-                            }
-                            JTable teacherTable = new JTable(teachersArray, columnNamesT);
-                            JScrollPane teacherSp = new JScrollPane(teacherTable);
-                            teacherSp.setBounds(50, 50, 500, 800);
-                            frame.getContentPane().add(teacherSp);
-
-                        }
-                    }
-                });
-
-                /*delete.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-
-                        if (firstName.getText().isEmpty() || lastName.getText().isEmpty()) {
-                            JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        else {
-
-                            boolean found = false;
-                            for (int i = teachers.size() - 1; i >=0; i--) {
-                                if(teachers.get(i).getFirstName().equals(firstName.getText()) && teachers.get(i).getLastName().equals(lastName.getText())) {
-                                    teachers.remove(teachers.get(i));
-                                    found = true;
-                                }
-                            }
-                            if (!found) {
-                                JOptionPane.showMessageDialog(frame, "teacher does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
-                                return;
-                            }
-
-                            firstName.setText("");
-                            lastName.setText("");
-
-                            String[] columnNamesT = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-
-                            Object[][] teachersArray = new Object[teachers.size()][4];
-                            Object[] row;
-                            for (int i = 0;i < teachers.size(); i++) {
-                                row = new Object[]{(Integer)(teachers.get(i).getID()), teachers.get(i).getFirstName(), teachers.get(i).getLastName(), teachers.get(i).getSections()};
-                                teachersArray[i] = row;
-                            }
-                            JTable teacherTable = new JTable(teachersArray, columnNamesT);
-                            JScrollPane teacherSp = new JScrollPane(teacherTable);
-                            teacherSp.setBounds(50, 50, 500, 800);
-                            frame.getContentPane().add(teacherSp);
-
-                        }
-                    }
-                });*/
-
-                frame.getContentPane().add(studentSp);
+                
             }
         });
 
@@ -428,6 +281,156 @@ public class Frame {
                 coursePanel.setVisible(true);
                 studentPanel.setVisible(false);
                 aboutPanel.setVisible(false);
+
+                ArrayList<Object> courses = new ArrayList<Object>();
+                courses.add(new Course(145, "Calculus BC", "AP"));
+                courses.add(new Course(134565, "Chemistry", "KAP"));
+                courses.add(new Course(654665, "Seminar", "AP"));
+                courses.add(new Course(652645, "English II", "KAP"));
+
+
+                String[] columnNames = {"Course ID", "Name", "Type"};
+                JScrollPane courseTable = (new ScrollingTable(courses, columnNames, new boolean[]{false, true, true}, "Course")).getSp();
+                courseTable.setBounds(50, 50, 500, 800);
+                coursePanel.add(courseTable);
+
+                JTextField courseField = new JTextField("");
+                JLabel courseLabel = new JLabel("Course Title: ");
+                JLabel typeLabel = new JLabel("Course Type:");
+                JRadioButton acaB = new JRadioButton("Academic");
+                JRadioButton kapB = new JRadioButton("KAP");
+                JRadioButton apB = new JRadioButton("AP");
+                courseField.setBounds(750, 250, 200, 50);
+                courseLabel.setBounds(600, 250, 125, 50);
+                typeLabel.setBounds(600, 325, 325, 25);
+                acaB.setBounds(600, 350, 100, 50);
+                kapB.setBounds(725, 350, 100, 50);
+                apB.setBounds(850, 350, 100, 50);
+
+                JButton add = new JButton("ADD");
+                JButton delete = new JButton("DELETE");
+                add.setBounds(600, 425, 150, 50);
+                delete.setBounds(800, 425, 150, 50);
+
+                coursePanel.add(courseField);
+                coursePanel.add(courseLabel);
+                coursePanel.add(typeLabel);
+                coursePanel.add(acaB);
+                coursePanel.add(kapB);
+                coursePanel.add(apB);
+                coursePanel.add(add);
+                coursePanel.add(delete);
+                
+                acaB.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (acaB.isSelected()) {
+                            kapB.setSelected(false);
+                            apB.setSelected(false);
+                        }
+                    }
+                });
+
+                kapB.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (kapB.isSelected()) {
+                            acaB.setSelected(false);
+                            apB.setSelected(false);
+                        }
+                    }
+                });
+
+                apB.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        if (apB.isSelected()) {
+                            acaB.setSelected(false);
+                            kapB.setSelected(false);
+                        }
+                    }
+                });
+                
+                add.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        
+                        String selected = "";
+
+                        if (acaB.isSelected()) {
+                            selected = "Academic";
+                        }
+                        else if (kapB.isSelected()) {
+                            selected = "KAP";
+                        }
+                        else if (apB.isSelected()) {
+                            selected = "AP";
+                        }
+                        if (courseField.getText().isEmpty() || selected == "") {
+                            JOptionPane.showMessageDialog(frame, "please complete all fields", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else {                            
+                            courses.add(new Course(13450, courseField.getText(), selected));
+            
+                            courseField.setText("");
+                            acaB.setSelected(false);
+                            kapB.setSelected(false);
+                            apB.setSelected(false);
+
+                            String[] columnNames = {"Course ID", "Name", "Type"};
+                            JScrollPane courseTable = (new ScrollingTable(courses, columnNames, new boolean[]{false, true, true}, "Course")).getSp();
+                            courseTable.setBounds(50, 50, 500, 800);
+                            coursePanel.add(courseTable);
+
+                        }
+                    }
+                });
+
+                delete.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        String selected = "";
+
+                        if (acaB.isSelected()) {
+                            selected = "Academic";
+                        }
+                        else if (kapB.isSelected()) {
+                            selected = "KAP";
+                        }
+                        else if (apB.isSelected()) {
+                            selected = "AP";
+                        }
+                        if (courseField.getText().isEmpty() || selected == "") {
+                            JOptionPane.showMessageDialog(frame, "please complete all fields", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else {
+
+                            boolean found = false;
+                            for (int i = courses.size() - 1; i >=0; i--) {
+                                if(((Course) courses.get(i)).getName().equals(courseField.getText()) && ((Course) courses.get(i)).getType().equals(selected)) {
+                                    courses.remove(courses.get(i));
+                                    found = true;
+                                }
+                            }
+                            if (!found) {
+                                JOptionPane.showMessageDialog(frame, "course does not exist...", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                                return;
+                            }
+
+                            courseField.setText("");
+                            acaB.setSelected(false);
+                            kapB.setSelected(false);
+                            apB.setSelected(false);
+
+                            String[] columnNames = {"Course ID", "Name", "Type"};
+                            JScrollPane courseTable = (new ScrollingTable(courses, columnNames, new boolean[]{false, true, true}, "Course")).getSp();
+                            courseTable.setBounds(50, 50, 500, 800);
+                            coursePanel.add(courseTable);
+                        }
+                    }
+                });
+
             }
         });
 
@@ -438,12 +441,11 @@ public class Frame {
                 sectionPanel.setVisible(false);
                 coursePanel.setVisible(false);
                 studentPanel.setVisible(false);
+                aboutPanel.setVisible(true);
 
-                JLabel versionsAndMakes = new JLabel("school version 1.3 | created by pranav ullas");
+                JLabel versionsAndMakes = new JLabel("school version 145i95 | created by pranav ullas");
                 versionsAndMakes.setBounds(400, 450, 200, 50);
                 aboutPanel.add(versionsAndMakes);
-
-                aboutPanel.setVisible(true);
             }
         });
 
@@ -456,15 +458,5 @@ public class Frame {
         frame.setVisible(true);
 
     }
-
-
-    /*public boolean isCellEditable(int row, int column) {
-        if(row ==2 && column ==3) {
-            return false;
-        }
-        else {
-            return true;
-        }
-    }*/
 
 }

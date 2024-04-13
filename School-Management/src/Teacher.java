@@ -6,12 +6,14 @@ public class Teacher {
     private String firstName;
     private String lastName;
     private ArrayList<Section> sections;
+    private ArrayList<Teacher> masterTeacherList = new ArrayList<Teacher>();
 
     public Teacher(int ID, String firstName, String lastName, ArrayList<Section> sections) {
-        this.Id = Id;
+        this.Id = ID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.sections = sections;
+        masterTeacherList.add(this);
     }
 
     public int getId() {
