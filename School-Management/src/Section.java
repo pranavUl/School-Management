@@ -1,13 +1,35 @@
+import java.util.ArrayList;
+
 public class Section {
 
     private int id;;
     private int cID;
     private int tID;
+    private String course;
+    private String tFirstName;
+    private String tLastName;
+    private ArrayList<Object> students;
     
     public Section(int id, int cID, int tID) {
         this.id = id;
         this.cID = cID;
         this.tID = tID;
+    }
+
+    public Section(int id, int cID, int tID, String course) {
+        this.id = id;
+        this.cID = cID;
+        this.tID = tID;
+        this.course = course;
+    }
+
+    public Section(int id, int cID, int tID, String course, String tFirstName, String tLastName) {
+        this.id = id;
+        this.cID = cID;
+        this.tID = tID;
+        this.course = course;
+        this.tFirstName = tFirstName;
+        this.tLastName = tLastName;
     }
 
     public int getId() {
@@ -33,5 +55,38 @@ public class Section {
     public void settID(int tID) {
         this.tID = tID;
     }
-    
+
+    public String getCourse() {
+        return course;
+    }
+
+    public void setCourse(String course) {
+        this.course = course;
+    }
+
+    public String gettFirstName() {
+        return tFirstName;
+    }
+
+    public void settFirstName(String tFirstName) {
+        this.tFirstName = tFirstName;
+    }
+
+    public String gettLastName() {
+        return tLastName;
+    }
+
+    public void settLastName(String tLastName) {
+        this.tLastName = tLastName;
+    }
+
+    public ArrayList<Object> getStudents() {
+        return students;
+    }
+
+    public void setStudents(ArrayList<Object> students) {
+        this.students = students;
+    }
+
+        
 }

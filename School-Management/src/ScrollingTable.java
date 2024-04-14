@@ -32,7 +32,7 @@ public class ScrollingTable extends JTable {
                 row[3] = ((Teacher) arraylist.get(i)).getSections();
             }
 
-            else if (Objects.equals(type, "SectionsTaught")) { //for Teacher view
+            //else if (Objects.equals(type, "SectionsTaught")) { //for Teacher view
                 /*row[0] = ((Section) arraylist.get(i)).getId();
                 StringBuilder courses = new StringBuilder();
                 if (((Section) arraylist.get(i)).getCourses() != null) {
@@ -44,7 +44,7 @@ public class ScrollingTable extends JTable {
                 else {
                     row[1] = "";
                 }*/
-            }
+            //}
 
             else if (Objects.equals(type, "Student")) {
                 row[0] = ((Student) arraylist.get(i)).getId();
@@ -57,9 +57,13 @@ public class ScrollingTable extends JTable {
             }
 
             else if (Objects.equals(type, "Section")) {
-                /*row[0] = ((Section) arraylist.get(i)).getId();
-                row[1] = ((Section) arraylist.get(i)).getCourses();
-                row[2] = ((Section) arraylist.get(i)).getTeachers();*/
+                row[0] = ((Section) arraylist.get(i)).getId();
+                row[1] = ((Section) arraylist.get(i)).getcID();
+                row[2] = ((Section) arraylist.get(i)).getCourse();
+                row[3] = ((Section) arraylist.get(i)).gettID();
+                row[4] = ((Section) arraylist.get(i)).gettFirstName();
+                row[5] = ((Section) arraylist.get(i)).gettLastName();
+                System.out.println(((Section) arraylist.get(i)).getId() + " " + ((Section) arraylist.get(i)).getcID() + " " + ((Section) arraylist.get(i)).getCourse() + " " + ((Section) arraylist.get(i)).gettID() + " " + ((Section) arraylist.get(i)).gettFirstName() + " " + ((Section) arraylist.get(i)).gettLastName());
             }
 
             else if (Objects.equals(type, "Roster")) { // for Section

@@ -2,8 +2,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileWriter;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Frame {
     public static void main(String[] args) {
@@ -91,10 +94,18 @@ public class Frame {
                 //get all teachers into an arraylist from db later here
 
                 ArrayList<Object> teachers = new ArrayList<Object>();
-                teachers.add(new Teacher(125, "h", "s", null));
-                teachers.add(new Teacher(1251435, "ja", "ahe", null));
-                teachers.add(new Teacher(1263565, "wt", "rd", null));
-                teachers.add(new Teacher(165525, "pir", "go", null));
+                try {
+                    File file = new File("teachers.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2], null));
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
 
                 String[] columnNames = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
@@ -160,6 +171,19 @@ public class Frame {
                             teacherPanel.add(teacherTable);
 
                         }
+
+                        try {
+                            File file = new File("teachers.txt");
+                            FileWriter fw = new FileWriter(file, false); 
+                            for (Object c : teachers) {
+                                fw.write(((Teacher) c).getId() + " " + ((Teacher) c).getFirstName() + " " + ((Teacher) c).getLastName() + " " + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -191,6 +215,18 @@ public class Frame {
                             JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true, false}, "Teacher")).getSp();
                             teacherTable.setBounds(50, 50, 500, 800);
                             teacherPanel.add(teacherTable);
+                        }
+
+                        try {
+                            File file = new File("teachers.txt");
+                            FileWriter fw = new FileWriter(file, false); 
+                            for (Object c : teachers) {
+                                fw.write(((Teacher) c).getId() + " " + ((Teacher) c).getFirstName() + " " + ((Teacher) c).getLastName() + " " + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
                         }
                     }
                 });
@@ -265,11 +301,270 @@ public class Frame {
         sectionViewSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 teacherPanel.setVisible(false);
                 sectionPanel.setVisible(true);
                 coursePanel.setVisible(false);
                 studentPanel.setVisible(false);
                 aboutPanel.setVisible(false);
+
+                //pull course info from file for now, DB later
+                ArrayList<Object> courses = new ArrayList<Object>();
+                try {
+                    File file = new File("courses.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        courses.add(new Course((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+                ArrayList<Object> teachers = new ArrayList<Object>();
+                try {
+                    File file = new File("teachers.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2], null));
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                ArrayList<Object> sections = new ArrayList<Object>();
+                sections.add(new Section(13, 145, 1));
+                sections.add(new Section(14, 134565, 2));
+                
+                for (Object s : sections) {
+                    for (Object c : courses) {
+                        if (((Section) s).getcID() == ((Course) c).getId()) {
+                            ((Section) s).setCourse(((Course) c).getName());
+                            break;
+                        }
+                    }
+                }
+
+                for (Object s : sections) {
+                    for (Object t : teachers) {
+                        if (((Section) s).gettID() == ((Teacher) t).getId()) {
+                            ((Section) s).settFirstName(((Teacher) t).getFirstName());
+                            ((Section) s).settLastName(((Teacher) t).getLastName());
+                            break;
+                        }
+                    }
+                }
+
+                String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
+                JScrollPane sectionTable = (new ScrollingTable(sections, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
+                sectionTable.setBounds(50, 50, 500, 800);
+                sectionPanel.add(sectionTable);
+
+                String[] courseNames = new String[courses.size() + 1];
+                courseNames[0] = " ";
+                for (int i = 1; i < courseNames.length; i++) {
+                    courseNames[i] = ((Course) courses.get(i-1)).getName();
+                }
+                
+                JLabel courseDDLabel = new JLabel("Sections by Course: ");
+                courseDDLabel.setBounds(600, 50, 150, 25);
+                sectionPanel.add(courseDDLabel);
+                JComboBox<String> courseDD = new JComboBox<String>(courseNames);
+                courseDD.setBounds(600, 100, 100, 25);
+                sectionPanel.add(courseDD);
+
+                String[] teacherNames = new String[teachers.size() + 1];
+                teacherNames[0] = " ";
+                for (int i = 1; i < teacherNames.length; i++) {
+                    teacherNames[i] = ((Teacher) teachers.get(i-1)).getFirstName() + " " + ((Teacher) teachers.get(i-1)).getLastName();
+                }
+                
+                JLabel teacherDDLabel = new JLabel("Sections by Teacher: ");
+                teacherDDLabel.setBounds(800, 50, 150, 25);
+                sectionPanel.add(teacherDDLabel);
+                JComboBox<String> teacherDD = new JComboBox<String>(teacherNames);
+                teacherDD.setBounds(800, 100, 100, 25);
+                sectionPanel.add(teacherDD);
+
+                
+                //add or remove a section
+                JTextField sID = new JTextField("");
+                JLabel sIDLabel = new JLabel("Section ID: ");
+                JTextField cID = new JTextField("");
+                JLabel cIDLabel = new JLabel("Course ID: ");
+                JTextField tID = new JTextField("");
+                JLabel tIDLabel = new JLabel("Teacher ID: ");
+                sID.setBounds(750, 575, 200, 50);
+                cID.setBounds(750, 650, 200, 50);
+                tID.setBounds(750, 725, 200, 50);
+                sIDLabel.setBounds(600, 575, 125, 50);
+                cIDLabel.setBounds(600, 650, 125, 50);
+                tIDLabel.setBounds(600, 725, 125, 50);
+
+                JButton add = new JButton("ADD");
+                JButton delete = new JButton("DELETE");
+                add.setBounds(600, 800, 150, 50);
+                delete.setBounds(800, 800, 150, 50);
+
+                sectionPanel.add(sIDLabel);
+                sectionPanel.add(sID);
+                sectionPanel.add(cIDLabel);
+                sectionPanel.add(cID);
+                sectionPanel.add(tID);
+                sectionPanel.add(tIDLabel);
+                sectionPanel.add(add);
+                sectionPanel.add(delete);
+
+
+
+                courseDD.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {                        
+                        int courseID = -1;
+                        for (Object c : courses) {
+                            if (courseDD.getSelectedItem() == ((Course) c).getName()) {
+                                courseID = (((Course) c).getId());
+                                break;
+                            }
+                        }
+
+                        ArrayList<Object> sections2 = new ArrayList<Object>();
+                        for (int i = 0; i < sections.size(); i++) {
+                            if (((Section) sections.get(i)).getcID() == courseID || courseID == -1) {
+                                sections2.add(sections.get(i));
+                            }
+                        }
+
+                        String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
+                        JScrollPane sectionTable = (new ScrollingTable(sections2, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
+                        sectionTable.setBounds(50, 50, 500, 800);
+                        sectionPanel.add(sectionTable);
+                    }
+                });
+
+                teacherDD.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {                        
+                        int teacherID = -1;
+                        for (Object t : teachers) {
+                            System.out.println(teacherDD.getSelectedItem());
+                            System.out.println((((Teacher) t).getFirstName() + " " + ((Teacher) t).getLastName()) + "\n");
+                            if (teacherDD.getSelectedItem().equals(((Teacher) t).getFirstName() + " " + ((Teacher) t).getLastName())) {
+                                teacherID = (((Teacher) t).getId());
+                                break;
+                            }
+                        }
+                        System.out.println(teacherID);
+
+                        ArrayList<Object> sections2 = new ArrayList<Object>();
+                        for (int i = 0; i < sections.size(); i++) {
+                            if (((Section) sections.get(i)).gettID() == teacherID || teacherID == -1) {
+                                sections2.add(sections.get(i));
+                            }
+                        }
+
+                        String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
+                        JScrollPane sectionTable = (new ScrollingTable(sections2, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
+                        sectionTable.setBounds(50, 50, 500, 800);
+                        sectionPanel.add(sectionTable);
+                    }
+                });
+
+                add.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        for (Object s : sections) {
+                            if (((Section) s).getId() == Integer.parseInt(sID.getText())) {
+                                JOptionPane.showMessageDialog(frame, "cannot add duplicate section id", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                                return;
+                            }
+                        }
+
+
+                        boolean found = false;
+                        for (Object c : courses) {
+                            if (Integer.parseInt(cID.getText()) == ((Course) c).getId()) {
+                                found = true;
+                                break;
+                            }
+                        }
+        
+                        if (found == false) {
+                            JOptionPane.showMessageDialog(frame, "course " + Integer.parseInt(cID.getText()) +" does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+
+                        found = false;
+                        for (Object t : teachers) {
+                            if (Integer.parseInt(tID.getText()) == ((Teacher) t).getId()) {
+                                found = true;
+                                break;
+                            }
+                        }
+
+                        if (found == false) {
+                            JOptionPane.showMessageDialog(frame, "teacher " + Integer.parseInt(tID.getText()) +" does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+
+                        if (tID.getText().isEmpty() || sID.getText().isEmpty() || cID.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(frame, "please fill out all fields", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else {
+                            sections.add(new Section(Integer.parseInt(sID.getText()), Integer.parseInt(cID.getText()), Integer.parseInt(tID.getText())));
+                            
+                            for (Object s : sections) {
+                                for (Object c : courses) {
+                                    if (((Section) s).getcID() == ((Course) c).getId()) {
+                                        ((Section) s).setCourse(((Course) c).getName());
+                                        break;
+                                    }
+                                }
+                            }
+
+                            for (Object s : sections) {
+                                for (Object t : teachers) {
+                                    if (((Section) s).gettID() == ((Teacher) t).getId()) {
+                                        ((Section) s).settFirstName(((Teacher) t).getFirstName());
+                                        ((Section) s).settLastName(((Teacher) t).getLastName());
+                                        break;
+                                    }
+                                }
+                            }
+
+
+                            sID.setText("");
+                            cID.setText("");
+                            tID.setText("");
+
+                            String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
+                            JScrollPane sectionTable = (new ScrollingTable(sections, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
+                            sectionTable.setBounds(50, 50, 500, 800);
+                            sectionPanel.add(sectionTable);
+
+                        }
+
+                        try {
+                            File file = new File("sections.txt");
+                            FileWriter fw = new FileWriter(file, false); 
+                            for (Object s : sections) {
+                                fw.write(((Section) s).getId() + " " + ((Section) s).getcID() + " " + ((Section) s).getCourse() + " " + ((Section) s).gettID() + " " + ((Section) s).gettFirstName() + " " + ((Section) s).gettLastName() + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
+                    }
+                });
+
             }
         });
 
@@ -283,10 +578,18 @@ public class Frame {
                 aboutPanel.setVisible(false);
 
                 ArrayList<Object> courses = new ArrayList<Object>();
-                courses.add(new Course(145, "Calculus BC", "AP"));
-                courses.add(new Course(134565, "Chemistry", "KAP"));
-                courses.add(new Course(654665, "Seminar", "AP"));
-                courses.add(new Course(652645, "English II", "KAP"));
+                try {
+                    File file = new File("courses.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        courses.add(new Course((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
 
 
                 String[] columnNames = {"Course ID", "Name", "Type"};
@@ -383,6 +686,19 @@ public class Frame {
                             coursePanel.add(courseTable);
 
                         }
+
+                        try {
+                            File file = new File("courses.txt");
+                            FileWriter fw = new FileWriter(file, false); 
+                            for (Object c : courses) {
+                                fw.write(((Course) c).getId() + " " + ((Course) c).getName() + " " + ((Course) c).getType() + " " + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -427,6 +743,18 @@ public class Frame {
                             JScrollPane courseTable = (new ScrollingTable(courses, columnNames, new boolean[]{false, true, true}, "Course")).getSp();
                             courseTable.setBounds(50, 50, 500, 800);
                             coursePanel.add(courseTable);
+                        }
+
+                        try {
+                            File file = new File("courses.txt");
+                            FileWriter fw = new FileWriter(file, false); 
+                            for (Object c : courses) {
+                                fw.write(((Course) c).getId() + " " + ((Course) c).getName() + " " + ((Course) c).getType() + " " + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
                         }
                     }
                 });
