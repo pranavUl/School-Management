@@ -29,7 +29,6 @@ public class ScrollingTable extends JTable {
                 row[0] = ((Teacher) arraylist.get(i)).getId();
                 row[1] = ((Teacher) arraylist.get(i)).getFirstName();
                 row[2] = ((Teacher) arraylist.get(i)).getLastName();
-                row[3] = ((Teacher) arraylist.get(i)).getSections();
             }
 
             //else if (Objects.equals(type, "SectionsTaught")) { //for Teacher view
@@ -66,10 +65,8 @@ public class ScrollingTable extends JTable {
                 System.out.println(((Section) arraylist.get(i)).getId() + " " + ((Section) arraylist.get(i)).getcID() + " " + ((Section) arraylist.get(i)).getCourse() + " " + ((Section) arraylist.get(i)).gettID() + " " + ((Section) arraylist.get(i)).gettFirstName() + " " + ((Section) arraylist.get(i)).gettLastName());
             }
 
-            else if (Objects.equals(type, "Roster")) { // for Section
-                row[0] = ((Student) arraylist.get(i)).getId();
-                row[1] = ((Student) arraylist.get(i)).getFirstName();
-                row[2] = ((Student) arraylist.get(i)).getLastName();
+            else if (Objects.equals(type, "Roster")) {
+                
 
                 //NEED TO ADD ROSTER SORTER
 

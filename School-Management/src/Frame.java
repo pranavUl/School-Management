@@ -99,7 +99,7 @@ public class Frame {
                     Scanner reader = new Scanner(file);
                     while (reader.hasNextLine()) {
                         String s = reader.nextLine();
-                        teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2], null));
+                        teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
                     }
                     reader.close();
                 }
@@ -108,8 +108,8 @@ public class Frame {
                 }
 
 
-                String[] columnNames = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-                JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true, false}, "Teacher")).getSp();
+                String[] columnNames = {"Teacher ID", "First Name", "Last Name"};
+                JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true}, "Teacher")).getSp();
                 teacherTable.setBounds(50, 50, 500, 800);
                 teacherPanel.add(teacherTable);
 
@@ -160,13 +160,13 @@ public class Frame {
                             JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
                         }
                         else {
-                            teachers.add(new Teacher(410243 /*sql id*/, firstName.getText(), lastName.getText(), null));
+                            teachers.add(new Teacher(410243 /*sql id*/, firstName.getText(), lastName.getText()));
             
                             firstName.setText("");
                             lastName.setText("");
 
-                            String[] columnNames = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-                            JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true, false}, "Teacher")).getSp();
+                            String[] columnNames = {"Teacher ID", "First Name", "Last Name"};
+                            JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true}, "Teacher")).getSp();
                             teacherTable.setBounds(50, 50, 500, 800);
                             teacherPanel.add(teacherTable);
 
@@ -211,8 +211,8 @@ public class Frame {
                             firstName.setText("");
                             lastName.setText("");
 
-                            String[] columnNames = {"Teacher ID", "First Name", "Last Name", "Sections Taught"};
-                            JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true, false}, "Teacher")).getSp();
+                            String[] columnNames = {"Teacher ID", "First Name", "Last Name"};
+                            JScrollPane teacherTable = (new ScrollingTable(teachers, columnNames, new boolean[]{false, true, true}, "Teacher")).getSp();
                             teacherTable.setBounds(50, 50, 500, 800);
                             teacherPanel.add(teacherTable);
                         }
@@ -245,53 +245,28 @@ public class Frame {
                 aboutPanel.setVisible(false);
                 studentPanel.setVisible(true);
 
-                //test schedule1
-                ArrayList<Object> schedule1 = new ArrayList<Object>();
-                schedule1.add(new Course(134512, "Calculus BC", "AP"));
-                schedule1.add(new Course(134565, "US History", "AP"));
-                schedule1.add(new Course(654665, "Computer Science A", "AP"));
-                schedule1.add(new Course(153655, "Band", "Academic"));
-                schedule1.add(new Course(652622, "Physics 1", "AP"));
-                schedule1.add(new Course(652645, "English Language and Composition", "AP"));
-                schedule1.add(new Course(652454, "Statistics", "AP"));
-
-                //test schedule2
-                ArrayList<Object> schedule2 = new ArrayList<Object>();
-                schedule2.add(new Course(134512, "Calculus BC", "AP"));
-                schedule2.add(new Course(134565, "Chemistry", "KAP"));
-                schedule2.add(new Course(654665, "Seminar", "AP"));
-                schedule2.add(new Course(153655, "Statistics", "Academic"));
-                schedule2.add(new Course(652622, "Physics 1", "AP"));
-                schedule2.add(new Course(652645, "English II", "KAP"));
-                schedule2.add(new Course(652454, "Tennis", "Academic"));
-
-                //test schedule3
-                ArrayList<Object> schedule3 = new ArrayList<Object>();
-                schedule2.add(new Course(134512, "Calculus BC", "AP"));
-                schedule2.add(new Course(134565, "Chemistry", "KAP"));
-                schedule2.add(new Course(654665, "Seminar", "AP"));
-                schedule2.add(new Course(153655, "Statistics", "Academic"));
-                schedule2.add(new Course(652622, "Physics 1", "AP"));
-                schedule2.add(new Course(652645, "English II", "KAP"));
-                schedule2.add(new Course(652454, "Tennis", "Academic"));
-
                 //get all Student into an arraylist from db later
                 ArrayList<Object> students = new ArrayList<Object>();
-                students.add(new Student(125, "billy", "willy", schedule1));
-                students.add(new Student(1251435, "nilly", "nilly", schedule1));
-                students.add(new Student(1263565, "bob", "joe", schedule2));
-                students.add(new Student(165525, "pete", "hi", schedule2));
+                students.add(new Student(125, "billy", "willy", null));
+                students.add(new Student(1251435, "nilly", "nilly", null));
+                students.add(new Student(1263565, "bob", "joe", null));
+                students.add(new Student(165525, "pete", "hi", null));
 
                 String[] columnNames = {"Student ID", "First Name", "Last Name"};
                 JScrollPane studentTable = (new ScrollingTable(students, columnNames, new boolean[]{false, true, true}, "Student")).getSp();
                 studentTable.setBounds(50, 50, 400, 600);
                 studentPanel.add(studentTable);
 
-
+                JLabel scheduleViewerLabel = new JLabel("View Schedule by Student ID: ");
+                JTextField scheduleSID = new JTextField();
+                scheduleViewerLabel.setBounds(500, 50, 200, 25);
+                scheduleSID.setBounds(750, 50, 200, 25);
+                studentPanel.add(scheduleViewerLabel);
+                studentPanel.add(scheduleSID);
 
                 String[] columnNames2 = {"Section ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
                 JScrollPane scheduleTable = (new ScrollingTable(students, columnNames2, new boolean[]{false, false, false, false, false}, "Schedule")).getSp();
-                scheduleTable.setBounds(500, 50, 450, 400);
+                scheduleTable.setBounds(500, 100, 450, 400);
                 studentPanel.add(scheduleTable);
 
                 
@@ -329,7 +304,7 @@ public class Frame {
                     Scanner reader = new Scanner(file);
                     while (reader.hasNextLine()) {
                         String s = reader.nextLine();
-                        teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2], null));
+                        teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
                     }
                     reader.close();
                 }
@@ -399,17 +374,17 @@ public class Frame {
                 JLabel cIDLabel = new JLabel("Course ID: ");
                 JTextField tID = new JTextField("");
                 JLabel tIDLabel = new JLabel("Teacher ID: ");
-                sID.setBounds(750, 575, 200, 50);
-                cID.setBounds(750, 650, 200, 50);
-                tID.setBounds(750, 725, 200, 50);
-                sIDLabel.setBounds(600, 575, 125, 50);
-                cIDLabel.setBounds(600, 650, 125, 50);
-                tIDLabel.setBounds(600, 725, 125, 50);
+                sID.setBounds(750, 150, 200, 25);
+                cID.setBounds(750, 200, 200, 25);
+                tID.setBounds(750, 250, 200, 25);
+                sIDLabel.setBounds(600, 150, 125, 25);
+                cIDLabel.setBounds(600, 200, 125, 25);
+                tIDLabel.setBounds(600, 250, 125, 25);
 
-                JButton add = new JButton("ADD");
-                JButton delete = new JButton("DELETE");
-                add.setBounds(600, 800, 150, 50);
-                delete.setBounds(800, 800, 150, 50);
+                JButton add = new JButton("ADD SECTION");
+                JButton delete = new JButton("DELETE SECTION");
+                add.setBounds(600, 300, 150, 50);
+                delete.setBounds(800, 300, 150, 50);
 
                 sectionPanel.add(sIDLabel);
                 sectionPanel.add(sID);
@@ -420,6 +395,47 @@ public class Frame {
                 sectionPanel.add(add);
                 sectionPanel.add(delete);
 
+                JLabel rosterSIDLabel = new JLabel("Search Roster by Section ID: "); 
+                JTextField rosterSID = new JTextField("");
+                rosterSIDLabel.setBounds(600, 375, 200, 25);
+                rosterSID.setBounds(850, 375, 100, 25);
+
+                ArrayList<Object> roster = new ArrayList<Object>();
+                String[] columnNames2 = {"Student First Name", "Student Last Name", "Student ID"};
+                JScrollPane rosterTable = (new ScrollingTable(roster, columnNames2, new boolean[]{false, false, false}, "Roster")).getSp();
+                rosterTable.setBounds(600, 425, 350, 300);
+                
+                
+                sectionPanel.add(rosterTable);
+                sectionPanel.add(rosterSIDLabel);
+                sectionPanel.add(rosterSID);
+
+                JTextField studentID = new JTextField("");
+                JLabel studentIDLabel = new JLabel("Student ID: ");
+                JTextField sFN = new JTextField("");
+                JLabel sFNLabel = new JLabel("Student First Name: ");
+                JTextField sLN = new JTextField("");
+                JLabel sLNLabel = new JLabel("Student Last Name: ");
+                studentID.setBounds(750, 750, 200, 25);
+                sFN.setBounds(750, 800, 200, 25);
+                sLN.setBounds(750, 850, 200, 25);
+                studentIDLabel.setBounds(600, 750, 125, 25);
+                sFNLabel.setBounds(600, 800, 125, 25);
+                sLNLabel.setBounds(600, 850, 125, 25);
+
+                JButton addStudent = new JButton("ADD STUDENT");
+                JButton deleteStudent = new JButton("DELETE STUDENT");
+                addStudent.setBounds(600, 900, 150, 50);
+                deleteStudent.setBounds(800, 900, 150, 50);
+
+                sectionPanel.add(studentIDLabel);
+                sectionPanel.add(studentID);
+                sectionPanel.add(sFN);
+                sectionPanel.add(sFNLabel);
+                sectionPanel.add(sLN);
+                sectionPanel.add(sLNLabel);
+                sectionPanel.add(addStudent);
+                sectionPanel.add(deleteStudent);
 
 
                 courseDD.addActionListener(new ActionListener() {
@@ -598,13 +614,13 @@ public class Frame {
                 coursePanel.add(courseTable);
 
                 JTextField courseField = new JTextField("");
-                JLabel courseLabel = new JLabel("Course Title: ");
+                JLabel courseLabel = new JLabel("Course Name: ");
                 JLabel typeLabel = new JLabel("Course Type:");
                 JRadioButton acaB = new JRadioButton("Academic");
                 JRadioButton kapB = new JRadioButton("KAP");
                 JRadioButton apB = new JRadioButton("AP");
-                courseField.setBounds(750, 250, 200, 50);
-                courseLabel.setBounds(600, 250, 125, 50);
+                courseField.setBounds(750, 275, 200, 25);
+                courseLabel.setBounds(600, 275, 125, 25);
                 typeLabel.setBounds(600, 325, 325, 25);
                 acaB.setBounds(600, 350, 100, 50);
                 kapB.setBounds(725, 350, 100, 50);

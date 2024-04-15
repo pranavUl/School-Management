@@ -5,15 +5,11 @@ public class Teacher {
     private int Id;
     private String firstName;
     private String lastName;
-    private ArrayList<Section> sections;
-    private ArrayList<Teacher> masterTeacherList = new ArrayList<Teacher>();
 
-    public Teacher(int ID, String firstName, String lastName, ArrayList<Section> sections) {
+    public Teacher(int ID, String firstName, String lastName) {
         this.Id = ID;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.sections = sections;
-        masterTeacherList.add(this);
     }
 
     public int getId() {
@@ -28,10 +24,6 @@ public class Teacher {
         return lastName;
     }
 
-    public ArrayList<Section> getSections() {
-        return sections;
-    }
-
     public void setId(int Id) {
         this.Id = Id;
     }
@@ -42,9 +34,5 @@ public class Teacher {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public void setSections(ArrayList<Section> sections) {
-        this.sections = sections;
     }
 }
