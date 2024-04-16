@@ -160,7 +160,7 @@ public class Frame {
                             JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
                         }
                         else {
-                            teachers.add(new Teacher(410243 /*sql id*/, firstName.getText(), lastName.getText()));
+                            teachers.add(new Teacher(teachers.size() + 1, firstName.getText(), lastName.getText()));
             
                             firstName.setText("");
                             lastName.setText("");
@@ -257,7 +257,7 @@ public class Frame {
                 studentTable.setBounds(50, 50, 400, 600);
                 studentPanel.add(studentTable);
 
-                JLabel scheduleViewerLabel = new JLabel("View Schedule by Student ID: ");
+                JLabel scheduleViewerLabel = new JLabel("Find Schedule by Student ID: ");
                 JTextField scheduleSID = new JTextField();
                 scheduleViewerLabel.setBounds(500, 50, 200, 25);
                 scheduleSID.setBounds(750, 50, 200, 25);
@@ -313,8 +313,18 @@ public class Frame {
                 }
 
                 ArrayList<Object> sections = new ArrayList<Object>();
-                sections.add(new Section(13, 145, 1));
-                sections.add(new Section(14, 134565, 2));
+                try {
+                    File file = new File("sections.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        sections.add((new Section((Integer.parseInt(s.split(" ")[0])), Integer.parseInt(s.split(" ")[1]), Integer.parseInt(s.split(" ")[3]))));
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
                 
                 for (Object s : sections) {
                     for (Object c : courses) {
@@ -346,7 +356,7 @@ public class Frame {
                     courseNames[i] = ((Course) courses.get(i-1)).getName();
                 }
                 
-                JLabel courseDDLabel = new JLabel("Sections by Course: ");
+                JLabel courseDDLabel = new JLabel("Course: " );
                 courseDDLabel.setBounds(600, 50, 150, 25);
                 sectionPanel.add(courseDDLabel);
                 JComboBox<String> courseDD = new JComboBox<String>(courseNames);
@@ -359,51 +369,30 @@ public class Frame {
                     teacherNames[i] = ((Teacher) teachers.get(i-1)).getFirstName() + " " + ((Teacher) teachers.get(i-1)).getLastName();
                 }
                 
-                JLabel teacherDDLabel = new JLabel("Sections by Teacher: ");
+                JLabel teacherDDLabel = new JLabel("Teacher: ");
                 teacherDDLabel.setBounds(800, 50, 150, 25);
                 sectionPanel.add(teacherDDLabel);
                 JComboBox<String> teacherDD = new JComboBox<String>(teacherNames);
                 teacherDD.setBounds(800, 100, 100, 25);
                 sectionPanel.add(teacherDD);
 
-                
-                //add or remove a section
-                JTextField sID = new JTextField("");
-                JLabel sIDLabel = new JLabel("Section ID: ");
-                JTextField cID = new JTextField("");
-                JLabel cIDLabel = new JLabel("Course ID: ");
-                JTextField tID = new JTextField("");
-                JLabel tIDLabel = new JLabel("Teacher ID: ");
-                sID.setBounds(750, 150, 200, 25);
-                cID.setBounds(750, 200, 200, 25);
-                tID.setBounds(750, 250, 200, 25);
-                sIDLabel.setBounds(600, 150, 125, 25);
-                cIDLabel.setBounds(600, 200, 125, 25);
-                tIDLabel.setBounds(600, 250, 125, 25);
-
                 JButton add = new JButton("ADD SECTION");
                 JButton delete = new JButton("DELETE SECTION");
-                add.setBounds(600, 300, 150, 50);
-                delete.setBounds(800, 300, 150, 50);
+                add.setBounds(600, 150, 150, 50);
+                delete.setBounds(800, 150, 150, 50);
 
-                sectionPanel.add(sIDLabel);
-                sectionPanel.add(sID);
-                sectionPanel.add(cIDLabel);
-                sectionPanel.add(cID);
-                sectionPanel.add(tID);
-                sectionPanel.add(tIDLabel);
                 sectionPanel.add(add);
                 sectionPanel.add(delete);
 
-                JLabel rosterSIDLabel = new JLabel("Search Roster by Section ID: "); 
+                JLabel rosterSIDLabel = new JLabel("Find Roster by Section ID: "); 
                 JTextField rosterSID = new JTextField("");
-                rosterSIDLabel.setBounds(600, 375, 200, 25);
-                rosterSID.setBounds(850, 375, 100, 25);
+                rosterSIDLabel.setBounds(600, 225, 200, 25);
+                rosterSID.setBounds(850, 225, 100, 25);
 
                 ArrayList<Object> roster = new ArrayList<Object>();
                 String[] columnNames2 = {"Student First Name", "Student Last Name", "Student ID"};
                 JScrollPane rosterTable = (new ScrollingTable(roster, columnNames2, new boolean[]{false, false, false}, "Roster")).getSp();
-                rosterTable.setBounds(600, 425, 350, 300);
+                rosterTable.setBounds(600, 275, 350, 300);
                 
                 
                 sectionPanel.add(rosterTable);
@@ -416,17 +405,18 @@ public class Frame {
                 JLabel sFNLabel = new JLabel("Student First Name: ");
                 JTextField sLN = new JTextField("");
                 JLabel sLNLabel = new JLabel("Student Last Name: ");
-                studentID.setBounds(750, 750, 200, 25);
-                sFN.setBounds(750, 800, 200, 25);
-                sLN.setBounds(750, 850, 200, 25);
-                studentIDLabel.setBounds(600, 750, 125, 25);
-                sFNLabel.setBounds(600, 800, 125, 25);
-                sLNLabel.setBounds(600, 850, 125, 25);
+                
+                studentID.setBounds(750, 600, 200, 25);
+                sFN.setBounds(750, 650, 200, 25);
+                sLN.setBounds(750, 700, 200, 25);
+                studentIDLabel.setBounds(600, 600, 125, 25);
+                sFNLabel.setBounds(600, 650, 125, 25);
+                sLNLabel.setBounds(600, 700, 125, 25);
 
                 JButton addStudent = new JButton("ADD STUDENT");
                 JButton deleteStudent = new JButton("DELETE STUDENT");
-                addStudent.setBounds(600, 900, 150, 50);
-                deleteStudent.setBounds(800, 900, 150, 50);
+                addStudent.setBounds(600, 750, 150, 50);
+                deleteStudent.setBounds(800, 750, 150, 50);
 
                 sectionPanel.add(studentIDLabel);
                 sectionPanel.add(studentID);
@@ -437,103 +427,30 @@ public class Frame {
                 sectionPanel.add(addStudent);
                 sectionPanel.add(deleteStudent);
 
-
-                courseDD.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {                        
-                        int courseID = -1;
-                        for (Object c : courses) {
-                            if (courseDD.getSelectedItem() == ((Course) c).getName()) {
-                                courseID = (((Course) c).getId());
-                                break;
-                            }
-                        }
-
-                        ArrayList<Object> sections2 = new ArrayList<Object>();
-                        for (int i = 0; i < sections.size(); i++) {
-                            if (((Section) sections.get(i)).getcID() == courseID || courseID == -1) {
-                                sections2.add(sections.get(i));
-                            }
-                        }
-
-                        String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
-                        JScrollPane sectionTable = (new ScrollingTable(sections2, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
-                        sectionTable.setBounds(50, 50, 500, 800);
-                        sectionPanel.add(sectionTable);
-                    }
-                });
-
-                teacherDD.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {                        
-                        int teacherID = -1;
-                        for (Object t : teachers) {
-                            System.out.println(teacherDD.getSelectedItem());
-                            System.out.println((((Teacher) t).getFirstName() + " " + ((Teacher) t).getLastName()) + "\n");
-                            if (teacherDD.getSelectedItem().equals(((Teacher) t).getFirstName() + " " + ((Teacher) t).getLastName())) {
-                                teacherID = (((Teacher) t).getId());
-                                break;
-                            }
-                        }
-                        System.out.println(teacherID);
-
-                        ArrayList<Object> sections2 = new ArrayList<Object>();
-                        for (int i = 0; i < sections.size(); i++) {
-                            if (((Section) sections.get(i)).gettID() == teacherID || teacherID == -1) {
-                                sections2.add(sections.get(i));
-                            }
-                        }
-
-                        String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
-                        JScrollPane sectionTable = (new ScrollingTable(sections2, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
-                        sectionTable.setBounds(50, 50, 500, 800);
-                        sectionPanel.add(sectionTable);
-                    }
-                });
-
                 add.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-                        for (Object s : sections) {
-                            if (((Section) s).getId() == Integer.parseInt(sID.getText())) {
-                                JOptionPane.showMessageDialog(frame, "cannot add duplicate section id", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        if (courseDD.getSelectedItem() == " " || teacherDD.getSelectedItem() == " ") {
+                            JOptionPane.showMessageDialog(frame, "select a course and teacher to add new section", "fail!", JOptionPane.INFORMATION_MESSAGE);
                                 return;
-                            }
-                        }
-
-
-                        boolean found = false;
-                        for (Object c : courses) {
-                            if (Integer.parseInt(cID.getText()) == ((Course) c).getId()) {
-                                found = true;
-                                break;
-                            }
-                        }
-        
-                        if (found == false) {
-                            JOptionPane.showMessageDialog(frame, "course " + Integer.parseInt(cID.getText()) +" does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
-                            return;
-                        }
-
-                        found = false;
-                        for (Object t : teachers) {
-                            if (Integer.parseInt(tID.getText()) == ((Teacher) t).getId()) {
-                                found = true;
-                                break;
-                            }
-                        }
-
-                        if (found == false) {
-                            JOptionPane.showMessageDialog(frame, "teacher " + Integer.parseInt(tID.getText()) +" does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
-                            return;
-                        }
-
-                        if (tID.getText().isEmpty() || sID.getText().isEmpty() || cID.getText().isEmpty()) {
-                            JOptionPane.showMessageDialog(frame, "please fill out all fields", "fail!", JOptionPane.INFORMATION_MESSAGE);
                         }
                         else {
-                            sections.add(new Section(Integer.parseInt(sID.getText()), Integer.parseInt(cID.getText()), Integer.parseInt(tID.getText())));
+                            
+                            int idHolder = -1;
+                            for (Object c : courses) {
+                                if (((Course) c).getName() == courseDD.getSelectedItem()) {
+                                    idHolder = ((Course) c).getId();
+                                }
+                            }
+                            int idHolder2 = -1;
+                            for (Object t : teachers) {
+                                if ((((Teacher) t).getFirstName() + " " + ((Teacher) t).getLastName()).equals(teacherDD.getSelectedItem())) {
+                                    idHolder2 = ((Teacher) t).getId();
+                                }
+                            }
+                            
+                            sections.add(new Section(sections.size() + 1, idHolder, idHolder2));
                             
                             for (Object s : sections) {
                                 for (Object c : courses) {
@@ -553,11 +470,6 @@ public class Frame {
                                     }
                                 }
                             }
-
-
-                            sID.setText("");
-                            cID.setText("");
-                            tID.setText("");
 
                             String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
                             JScrollPane sectionTable = (new ScrollingTable(sections, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
@@ -688,8 +600,9 @@ public class Frame {
                         if (courseField.getText().isEmpty() || selected == "") {
                             JOptionPane.showMessageDialog(frame, "please complete all fields", "fail!", JOptionPane.INFORMATION_MESSAGE);
                         }
-                        else {                            
-                            courses.add(new Course(13450, courseField.getText(), selected));
+                        else {           
+                            String dashedName = courseField.getText().replace(" ", "-");  
+                            courses.add(new Course(courses.size() + 1, dashedName, selected));
             
                             courseField.setText("");
                             acaB.setSelected(false);
