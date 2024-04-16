@@ -13,31 +13,31 @@ public class Frame {
 
         JFrame frame = new JFrame("SCHOOL MANAGEMENT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000 ,1000);
+        frame.setSize(1000 ,1200);
         frame.setLayout(null);
 
         JPanel teacherPanel = new JPanel();
-        teacherPanel.setSize(1000 ,1000);
+        teacherPanel.setSize(1000 ,1200);
         teacherPanel.setLayout(null);
         teacherPanel.setVisible(false);
 
         JPanel studentPanel = new JPanel();
-        studentPanel.setSize(1000 ,1000);
+        studentPanel.setSize(1000 ,1200);
         studentPanel.setLayout(null);
         teacherPanel.setVisible(false);
 
         JPanel coursePanel = new JPanel();
-        coursePanel.setSize(1000 ,1000);
+        coursePanel.setSize(1000 ,1200);
         coursePanel.setLayout(null);
         teacherPanel.setVisible(false);
 
         JPanel sectionPanel = new JPanel();
-        sectionPanel.setSize(1000 ,1000);
+        sectionPanel.setSize(1000 ,1200);
         sectionPanel.setLayout(null);
         teacherPanel.setVisible(false);
 
         JPanel aboutPanel = new JPanel();
-        sectionPanel.setSize(1000 ,1000);
+        sectionPanel.setSize(1000 ,1200);
         sectionPanel.setLayout(null);
         teacherPanel.setVisible(false);
 
@@ -489,6 +489,87 @@ public class Frame {
                         catch (Exception ex){
                             ex.printStackTrace();
                         }
+
+                    }
+                });
+
+                addStudent.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        boolean found = false;
+                        for (Object s : sections) {
+                            if (Integer.parseInt(rosterSID.getText()) == ((Section) s).getId()) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            JOptionPane.showMessageDialog(frame, "section " + Integer.parseInt(rosterSID.getText()) +" does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+
+                        //validate student id, first name, last name later
+                        /*found = false;
+                        for (Object s : students) {
+                            if (Integer.parseInt(studentID.getText()) == ((Student) s).getId()) {
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            JOptionPane.showMessageDialog(frame, "student " + Integer.parseInt(studentID.getText()) +" does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }*/
+
+                        if (rosterSID.getText().isEmpty() || studentID.getText().isEmpty() || sFN.getText().isEmpty() || sLN.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(frame, "please fill out all fields", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        /*else {
+                            sections.add(new Section(Integer.parseInt(sID.getText()), Integer.parseInt(cID.getText()), Integer.parseInt(tID.getText())));
+
+                            for (Object s : sections) {
+                                for (Object c : courses) {
+                                    if (((Section) s).getcID() == ((Course) c).getId()) {
+                                        ((Section) s).setCourse(((Course) c).getName());
+                                        break;
+                                    }
+                                }
+                            }
+
+                            for (Object s : sections) {
+                                for (Object t : teachers) {
+                                    if (((Section) s).gettID() == ((Teacher) t).getId()) {
+                                        ((Section) s).settFirstName(((Teacher) t).getFirstName());
+                                        ((Section) s).settLastName(((Teacher) t).getLastName());
+                                        break;
+                                    }
+                                }
+                            }
+
+
+                            sID.setText("");
+                            cID.setText("");
+                            tID.setText("");
+
+                            String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
+                            JScrollPane sectionTable = (new ScrollingTable(sections, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
+                            sectionTable.setBounds(50, 50, 500, 800);
+                            sectionPanel.add(sectionTable);
+
+                        }
+
+                        try {
+                            File file = new File("sections.txt");
+                            FileWriter fw = new FileWriter(file, false);
+                            for (Object s : sections) {
+                                fw.write(((Section) s).getId() + " " + ((Section) s).getcID() + " " + ((Section) s).getCourse() + " " + ((Section) s).gettID() + " " + ((Section) s).gettFirstName() + " " + ((Section) s).gettLastName() + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }*/
 
                     }
                 });
