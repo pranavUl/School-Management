@@ -134,10 +134,10 @@ public class Frame {
                 JLabel firstNameLabel = new JLabel("First Name: ");
                 JTextField lastName = new JTextField("");
                 JLabel lastNameLabel = new JLabel("Last Name: ");
-                firstName.setBounds(750, 450, 200, 50);
-                lastName.setBounds(750, 525, 200, 50);
-                firstNameLabel.setBounds(600, 450, 125, 50);
-                lastNameLabel.setBounds(600, 525, 125, 50);
+                firstName.setBounds(750, 500, 200, 25);
+                lastName.setBounds(750, 550, 200, 25);
+                firstNameLabel.setBounds(600, 500, 125, 25);
+                lastNameLabel.setBounds(600, 550, 125, 25);
 
                 JButton add = new JButton("ADD");
                 JButton delete = new JButton("DELETE");
@@ -254,7 +254,7 @@ public class Frame {
 
                 String[] columnNames = {"Student ID", "First Name", "Last Name"};
                 JScrollPane studentTable = (new ScrollingTable(students, columnNames, new boolean[]{false, true, true}, "Student")).getSp();
-                studentTable.setBounds(50, 50, 400, 600);
+                studentTable.setBounds(50, 50, 400, 800);
                 studentPanel.add(studentTable);
 
                 JLabel scheduleViewerLabel = new JLabel("Find Schedule by Student ID: ");
@@ -268,6 +268,27 @@ public class Frame {
                 JScrollPane scheduleTable = (new ScrollingTable(students, columnNames2, new boolean[]{false, false, false, false, false}, "Schedule")).getSp();
                 scheduleTable.setBounds(500, 100, 450, 400);
                 studentPanel.add(scheduleTable);
+
+                JTextField firstName = new JTextField("");
+                JLabel firstNameLabel = new JLabel("First Name: ");
+                JTextField lastName = new JTextField("");
+                JLabel lastNameLabel = new JLabel("Last Name: ");
+                firstName.setBounds(650, 550, 200, 25);
+                lastName.setBounds(650, 600, 200, 25);
+                firstNameLabel.setBounds(500, 550, 125, 25);
+                lastNameLabel.setBounds(500, 600, 125, 25);
+
+                JButton add = new JButton("ADD");
+                JButton delete = new JButton("DELETE");
+                add.setBounds(500, 650, 150, 50);
+                delete.setBounds(700, 650, 150, 50);
+
+                studentPanel.add(firstNameLabel);
+                studentPanel.add(firstName);
+                studentPanel.add(lastNameLabel);
+                studentPanel.add(lastName);
+                studentPanel.add(add);
+                studentPanel.add(delete);
 
                 
             }
@@ -490,6 +511,50 @@ public class Frame {
                             ex.printStackTrace();
                         }
 
+                    }
+                });
+
+                delete.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+
+                        if (courseDD.getSelectedItem() == " " || teacherDD.getSelectedItem() == " ") {
+                            JOptionPane.showMessageDialog(frame, "select a course and teacher to add new section", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+                        else {
+
+                            boolean found = false;
+                            for (int i = sections.size() - 1; i >= 0; i--) {
+                                    if (courseDD.getSelectedItem().equals(((Section) sections.get(i)).getCourse()) && teacherDD.getSelectedItem().equals(((Section) sections.get(i)).gettFirstName() + " " + ((Section) sections.get(i)).gettLastName())) {
+                                        sections.remove(sections.get(i));
+                                        found = true;
+                                        break;
+                                    }
+                            }
+
+                            if (!found) {
+                                JOptionPane.showMessageDialog(frame, "teacher does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                                return;
+                            }
+
+                            String[] columnNames = {"Section ID", "Course ID", "Course", "Teacher ID", "T. First Name", "T. Last Name"};
+                            JScrollPane sectionTable = (new ScrollingTable(sections, columnNames, new boolean[]{false, false, false, false, false, false}, "Section")).getSp();
+                            sectionTable.setBounds(50, 50, 500, 800);
+                            sectionPanel.add(sectionTable);
+                        }
+
+                        try {
+                            File file = new File("sections.txt");
+                            FileWriter fw = new FileWriter(file, false);
+                            for (Object s : sections) {
+                                fw.write(((Section) s).getId() + " " + ((Section) s).getcID() + " " + ((Section) s).getCourse() + " " + ((Section) s).gettID() + " " + ((Section) s).gettFirstName() + " " + ((Section) s).gettLastName() + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }
                     }
                 });
 
