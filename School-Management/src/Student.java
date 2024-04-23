@@ -5,13 +5,11 @@ public class Student {
     private int id;
     private String firstName;
     private String lastName;
-    private ArrayList<Object> schedule;
 
-    public Student(int id, String firstName, String lastName, ArrayList<Object> schedule) {
+    public Student(int id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.schedule = schedule;
     }
 
     public int getId() {
@@ -36,14 +34,6 @@ public class Student {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public ArrayList<Object> getSchedule() {
-        return schedule;
-    }
-
-    public void setSchedule(ArrayList<Object> schedule) {
-        this.schedule = schedule;
     }
 
     @Override

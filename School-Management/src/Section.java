@@ -14,6 +14,7 @@ public class Section {
         this.id = id;
         this.cID = cID;
         this.tID = tID;
+        this.students = new ArrayList<Object>();
     }
 
     public Section(int id, int cID, int tID, String course) {
@@ -21,6 +22,7 @@ public class Section {
         this.cID = cID;
         this.tID = tID;
         this.course = course;
+        this.students = new ArrayList<Object>();
     }
 
     public Section(int id, int cID, int tID, String course, String tFirstName, String tLastName) {
@@ -30,6 +32,7 @@ public class Section {
         this.course = course;
         this.tFirstName = tFirstName;
         this.tLastName = tLastName;
+        this.students = new ArrayList<Object>();
     }
 
     public int getId() {
@@ -82,6 +85,10 @@ public class Section {
 
     public ArrayList<Object> getStudents() {
         return students;
+    }
+
+    public void addStudent(Object s) {
+        students.add(s);
     }
 
     public void setStudents(ArrayList<Object> students) {

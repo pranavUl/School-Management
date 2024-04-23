@@ -31,7 +31,7 @@ public class ScrollingTable extends JTable {
                 row[2] = ((Teacher) arraylist.get(i)).getLastName();
             }
 
-            //else if (Objects.equals(type, "SectionsTaught")) { //for Teacher view
+            else if (Objects.equals(type, "SectionsTaught")) { //for Teacher view
                 /*row[0] = ((Section) arraylist.get(i)).getId();
                 StringBuilder courses = new StringBuilder();
                 if (((Section) arraylist.get(i)).getCourses() != null) {
@@ -43,7 +43,7 @@ public class ScrollingTable extends JTable {
                 else {
                     row[1] = "";
                 }*/
-            //}
+            }
 
             else if (Objects.equals(type, "Student")) {
                 row[0] = ((Student) arraylist.get(i)).getId();
@@ -52,7 +52,11 @@ public class ScrollingTable extends JTable {
             }
 
             else if (Objects.equals(type, "Schedule")) {
-                
+                row[0] = ((Section) arraylist.get(i)).getId();
+                row[1] = ((Section) arraylist.get(i)).getCourse();
+                row[2] = ((Section) arraylist.get(i)).gettID();
+                row[3] = ((Section) arraylist.get(i)).gettFirstName();
+                row[4] = ((Section) arraylist.get(i)).gettLastName();
             }
 
             else if (Objects.equals(type, "Section")) {
@@ -67,8 +71,11 @@ public class ScrollingTable extends JTable {
 
             else if (Objects.equals(type, "Roster")) {
                 
+                row[0] = ((Student) arraylist.get(i)).getLastName();
+                row[1] = ((Student) arraylist.get(i)).getFirstName();
+                row[2] = ((Student) arraylist.get(i)).getId();
 
-                //NEED TO ADD ROSTER SORTER
+                //NEED TO ADD ROSTER SORTER copy rolodex thing
 
             }
 
