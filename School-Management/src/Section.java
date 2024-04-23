@@ -91,6 +91,15 @@ public class Section {
         students.add(s);
     }
 
+    public void deleteStudent(Object s) {
+        for (int i = this.students.size() - 1; i >= 0; i--) {
+            if (((Student) this.students.get(i)).getId() == ((Student) s).getId()) {
+                this.students.remove(s);
+                break;
+            }
+        }
+    }
+
     public void setStudents(ArrayList<Object> students) {
         this.students = students;
     }

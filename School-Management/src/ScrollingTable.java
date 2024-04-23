@@ -31,18 +31,9 @@ public class ScrollingTable extends JTable {
                 row[2] = ((Teacher) arraylist.get(i)).getLastName();
             }
 
-            else if (Objects.equals(type, "SectionsTaught")) { //for Teacher view
-                /*row[0] = ((Section) arraylist.get(i)).getId();
-                StringBuilder courses = new StringBuilder();
-                if (((Section) arraylist.get(i)).getCourses() != null) {
-                    for (int k = 0; k < ((Section) arraylist.get(i)).getCourses().size(); k++) {
-                        courses.append(((Section) arraylist.get(i)).getCourses().get(k).getName()).append(" ");
-                    }
-                    row[1] = courses.toString();
-                }
-                else {
-                    row[1] = "";
-                }*/
+            else if (Objects.equals(type, "Sections Taught")) { //for Teacher view
+                row[0] = ((Section) arraylist.get(i)).getId();
+                row[1] = ((Section) arraylist.get(i)).getCourse();
             }
 
             else if (Objects.equals(type, "Student")) {
