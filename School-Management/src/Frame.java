@@ -314,10 +314,22 @@ public class Frame {
                             boolean found = false;
                             for (int i = teachers.size() - 1; i >=0; i--) {
                                 if(((Teacher) teachers.get(i)).getFirstName().equals(firstName.getText()) && ((Teacher) teachers.get(i)).getLastName().equals(lastName.getText())) {
+
+                                    for (Object s : sections) {
+                                        if (((Section) s).gettID() == ((Teacher) teachers.get(i)).getId() && ((Teacher) teachers.get(i)).getFirstName().equals(((Section) s).gettFirstName()) && ((Teacher) teachers.get(i)).getLastName().equals(((Section) s).gettLastName())) {
+                                            System.out.println(sections.size());
+                                            ((Section) s).settID(-1);
+                                            ((Section) s).settFirstName("No");
+                                            ((Section) s).settLastName("Teacher");
+                                        }
+                                    }
+
                                     teachers.remove(teachers.get(i));
                                     found = true;
+                                    break;
                                 }
                             }
+
                             if (!found) {
                                 JOptionPane.showMessageDialog(frame, "teacher does not exist", "fail!", JOptionPane.INFORMATION_MESSAGE);
                                 return;
@@ -343,6 +355,19 @@ public class Frame {
                         catch (Exception ex){
                             ex.printStackTrace();
                         }
+                        
+                        try {
+                            File file = new File("sections.txt");
+                            FileWriter fw = new FileWriter(file, false);
+                            for (Object s : sections) {
+                                fw.write(((Section) s).getId() + " " + ((Section) s).getcID() + " " + ((Section) s).getCourse() + " " + ((Section) s).gettID() + " " + ((Section) s).gettFirstName() + " " + ((Section) s).gettLastName() + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
                     }
                 });
 
@@ -742,7 +767,7 @@ public class Frame {
                 }
                 
                 JLabel courseDDLabel = new JLabel("Course: " );
-                courseDDLabel.setBounds(600, 50, 150, 25);
+                courseDDLabel.setBounds(600, 50, 100, 25);
                 sectionPanel.add(courseDDLabel);
                 JComboBox<String> courseDD = new JComboBox<String>(courseNames);
                 courseDD.setBounds(600, 100, 100, 25);
@@ -755,11 +780,18 @@ public class Frame {
                 }
                 
                 JLabel teacherDDLabel = new JLabel("Teacher: ");
-                teacherDDLabel.setBounds(800, 50, 150, 25);
+                teacherDDLabel.setBounds(725, 50, 100, 25);
                 sectionPanel.add(teacherDDLabel);
                 JComboBox<String> teacherDD = new JComboBox<String>(teacherNames);
-                teacherDD.setBounds(800, 100, 100, 25);
+                teacherDD.setBounds(725, 100, 100, 25);
                 sectionPanel.add(teacherDD);
+
+                JLabel deletionSIDLabel = new JLabel("S. ID (deletion): "); 
+                JTextField deletionSID = new JTextField("");
+                deletionSIDLabel.setBounds(850, 50, 100, 25);
+                deletionSID.setBounds(850, 100, 100, 25);
+                sectionPanel.add(deletionSID);
+                sectionPanel.add(deletionSIDLabel);
 
                 JButton add = new JButton("ADD SECTION");
                 JButton delete = new JButton("DELETE SECTION");
@@ -850,9 +882,14 @@ public class Frame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
+                        if (!deletionSID.getText().equals("")) {
+                            JOptionPane.showMessageDialog(frame, "leave section id field blank when adding sections", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
+
                         if (courseDD.getSelectedItem() == " " || teacherDD.getSelectedItem() == " ") {
                             JOptionPane.showMessageDialog(frame, "select a course and teacher to add new section", "fail!", JOptionPane.INFORMATION_MESSAGE);
-                                return;
+                            return;
                         }
                         else {
                             
@@ -916,15 +953,15 @@ public class Frame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-                        if (courseDD.getSelectedItem() == " " || teacherDD.getSelectedItem() == " ") {
-                            JOptionPane.showMessageDialog(frame, "select a course and teacher to add new section", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        if (courseDD.getSelectedItem() == " " || teacherDD.getSelectedItem() == " " || deletionSID.getText().equals("")) {
+                            JOptionPane.showMessageDialog(frame, "select a course and teacher and section id to delete new section", "fail!", JOptionPane.INFORMATION_MESSAGE);
                             return;
                         }
                         else {
 
                             boolean found = false;
                             for (int i = sections.size() - 1; i >= 0; i--) {
-                                    if (courseDD.getSelectedItem().equals(((Section) sections.get(i)).getCourse()) && teacherDD.getSelectedItem().equals(((Section) sections.get(i)).gettFirstName() + " " + ((Section) sections.get(i)).gettLastName())) {
+                                    if (Integer.parseInt(deletionSID.getText()) == (((Section) sections.get(i)).getId()) && courseDD.getSelectedItem().equals(((Section) sections.get(i)).getCourse()) && teacherDD.getSelectedItem().equals(((Section) sections.get(i)).gettFirstName() + " " + ((Section) sections.get(i)).gettLastName())) {
                                         sections.remove(sections.get(i));
                                         found = true;
                                         break;
@@ -932,7 +969,7 @@ public class Frame {
                             }
 
                             if (!found) {
-                                JOptionPane.showMessageDialog(frame, "teacher does not have sections", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(frame, "section not found", "fail!", JOptionPane.INFORMATION_MESSAGE);
                                 return;
                             }
 
@@ -947,6 +984,19 @@ public class Frame {
                             FileWriter fw = new FileWriter(file, false);
                             for (Object s : sections) {
                                 fw.write(((Section) s).getId() + " " + ((Section) s).getcID() + " " + ((Section) s).getCourse() + " " + ((Section) s).gettID() + " " + ((Section) s).gettFirstName() + " " + ((Section) s).gettLastName() + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+                        try {
+                            File file = new File("enrollment.txt");
+                            FileWriter fw = new FileWriter(file, false);
+                            for (Object s : sections) {
+                                for (Object o : ((Section) s).getStudents()) {
+                                    fw.write(((Section) s).getId() + " " + ((Student) o).getId() + "\n");
+                                }
                             }
                             fw.close();
                         }
@@ -1173,6 +1223,21 @@ public class Frame {
                 studentPanel.setVisible(false);
                 aboutPanel.setVisible(false);
 
+                //pull course info from file for now, DB later
+                ArrayList<Object> students = new ArrayList<Object>();
+                try {
+                    File file = new File("students.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        students.add(new Student((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
                 ArrayList<Object> courses = new ArrayList<Object>();
                 try {
                     File file = new File("courses.txt");
@@ -1185,6 +1250,74 @@ public class Frame {
                 }
                 catch (Exception ex) {
                     ex.printStackTrace();
+                }
+                
+                ArrayList<Object> teachers = new ArrayList<Object>();
+                try {
+                    File file = new File("teachers.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+
+                ArrayList<Object> sections = new ArrayList<Object>();
+                try {
+                    File file = new File("sections.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        sections.add((new Section((Integer.parseInt(s.split(" ")[0])), Integer.parseInt(s.split(" ")[1]), Integer.parseInt(s.split(" ")[3]))));
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                try {
+                    File file = new File("enrollment.txt");
+                    Scanner reader = new Scanner(file);
+                    while (reader.hasNextLine()) {
+                        String s = reader.nextLine();
+                        for (Object o : sections) {
+                            if (((Section) o).getId() == Integer.parseInt(s.split(" ")[0])) {
+                                for (Object o2 : students) {
+                                    if (((Student) o2).getId() == Integer.parseInt(s.split(" ")[1])) {
+                                        ((Section) o).addStudent(o2);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    reader.close();
+                }
+                catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+                
+                for (Object s : sections) {
+                    for (Object c : courses) {
+                        if (((Section) s).getcID() == ((Course) c).getId()) {
+                            ((Section) s).setCourse(((Course) c).getName());
+                            break;
+                        }
+                    }
+                }
+
+                for (Object s : sections) {
+                    for (Object t : teachers) {
+                        if (((Section) s).gettID() == ((Teacher) t).getId()) {
+                            ((Section) s).settFirstName(((Teacher) t).getFirstName());
+                            ((Section) s).settLastName(((Teacher) t).getLastName());
+                            break;
+                        }
+                    }
                 }
 
 
@@ -1328,8 +1461,10 @@ public class Frame {
                         else {
 
                             boolean found = false;
+                            int id = -3;
                             for (int i = courses.size() - 1; i >=0; i--) {
                                 if(((Course) courses.get(i)).getName().equals(courseField.getText()) && ((Course) courses.get(i)).getType().equals(selected)) {
+                                    id = ((Course) courses.get(i)).getId();
                                     courses.remove(courses.get(i));
                                     found = true;
                                 }
@@ -1337,6 +1472,12 @@ public class Frame {
                             if (!found) {
                                 JOptionPane.showMessageDialog(frame, "course does not exist...", "fail!", JOptionPane.INFORMATION_MESSAGE);
                                 return;
+                            }
+
+                            for (int i = sections.size() - 1; i >=0; i--) {
+                                if (((Section) sections.get(i)).getcID() == id) {
+                                    sections.remove(i);
+                                }
                             }
 
                             courseField.setText("");
@@ -1361,6 +1502,32 @@ public class Frame {
                         catch (Exception ex){
                             ex.printStackTrace();
                         }
+
+                        try {
+                            File file = new File("enrollment.txt");
+                            FileWriter fw = new FileWriter(file, false);
+                            for (Object s : sections) {
+                                for (Object o : ((Section) s).getStudents()) {
+                                    fw.write(((Section) s).getId() + " " + ((Student) o).getId() + "\n");
+                                }
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }
+
+                        try {
+                            File file = new File("sections.txt");
+                            FileWriter fw = new FileWriter(file, false);
+                            for (Object s : sections) {
+                                fw.write(((Section) s).getId() + " " + ((Section) s).getcID() + " " + ((Section) s).getCourse() + " " + ((Section) s).gettID() + " " + ((Section) s).gettFirstName() + " " + ((Section) s).gettLastName() + "\n");
+                            }
+                            fw.close();
+                        }
+                        catch (Exception ex){
+                            ex.printStackTrace();
+                        }
                     }
                 });
 
@@ -1376,7 +1543,7 @@ public class Frame {
                 studentPanel.setVisible(false);
                 aboutPanel.setVisible(true);
 
-                JLabel versionsAndMakes = new JLabel("school version 145i95 | created by pranav ullas");
+                JLabel versionsAndMakes = new JLabel("school version 4 | created by pranav ullas");
                 versionsAndMakes.setBounds(400, 450, 200, 50);
                 aboutPanel.add(versionsAndMakes);
             }

@@ -1,9 +1,5 @@
 1 Calculus-BC AP 
-2 Chemistry KAP 
-3 English-II KAP 
 4 English-III KAP 
-5 Calculus-AB AP 
 6 English-Language-and-Composition AP 
 7 Algebra-2 KAP 
-8 Geometry KAP 
 9 Research AP 

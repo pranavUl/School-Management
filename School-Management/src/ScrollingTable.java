@@ -17,11 +17,25 @@ public class ScrollingTable extends JTable {
     private boolean[] editables;
     private String type;
     
+    @SuppressWarnings("removal")
     public ScrollingTable(ArrayList<Object> arraylist, String[] cN, boolean[] editing, String type) {
         this.type = type;
         this.columnNames = cN;
         this.data = new Object[arraylist.size()][columnNames.length];
         Object[] row;
+
+        if (Objects.equals(type, "Roster")) {
+            arraylist.sort((a, b) ->
+                ((Student) b).getLastName().compareTo(((Student) a).getLastName())
+            );
+            arraylist.sort((a, b) ->
+                ((Student) b).getFirstName().compareTo(((Student) a).getFirstName())
+            );
+            arraylist.sort((a, b) ->
+                (new Integer(((Student) b).getId())).compareTo(new Integer(((Student) a).getId()))
+            );
+        }
+
         for (int i = 0;i < arraylist.size(); i++) {
             row = new Object[columnNames.length];
 
@@ -65,8 +79,6 @@ public class ScrollingTable extends JTable {
                 row[0] = ((Student) arraylist.get(i)).getLastName();
                 row[1] = ((Student) arraylist.get(i)).getFirstName();
                 row[2] = ((Student) arraylist.get(i)).getId();
-
-                //NEED TO ADD ROSTER SORTER copy rolodex thing
 
             }
 
