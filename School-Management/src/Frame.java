@@ -5,24 +5,23 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileWriter;
 import java.lang.reflect.Array;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Frame {
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
-        
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/school_manager","root","password");
 
-        Statement statement = connection.createStatement();
-
-        statement.execute("INSERT INTO student (id, first_name, last_name) VALUES (7, 'josh', 'smith'), (8, 'tina', 'shoemaker');");
-
-
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con=DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/school_management","root","password");
+            con.close();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
 
         JFrame frame = new JFrame("SCHOOL MANAGEMENT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
