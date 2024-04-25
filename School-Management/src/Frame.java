@@ -12,10 +12,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Frame {
-    public static void main(String[] args) {
+    
+    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+        
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/school_manager","root","password");
 
-        //Class.forName("com.mysql.jdbc.Driver");
-        //Connection connectionName = DriverManager.getConnection("jdbc:mysql://localhost:3306/school_management","root","password");
+        Statement statement = connection.createStatement();
+
+        statement.execute("INSERT INTO student (id, first_name, last_name) VALUES (7, 'josh', 'smith'), (8, 'tina', 'shoemaker');");
 
 
 
