@@ -13,15 +13,7 @@ public class Frame {
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con=DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/school_management","root","password");
-            con.close();
-        }
-        catch(Exception e) {
-            System.out.println(e);
-        }
+        importData();
 
         JFrame frame = new JFrame("SCHOOL MANAGEMENT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1569,6 +1561,23 @@ public class Frame {
         frame.getContentPane().add(aboutPanel);
         frame.setVisible(true);
 
+    }
+
+
+    public static void importData() {
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/school_management","root","");
+
+            Statement statement = con.createStatement();
+
+
+            con.close();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
     }
 
 }
