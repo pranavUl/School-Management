@@ -1,4 +1,4 @@
-4 English-III KAP 
-6 English-Language-and-Composition AP 
-7 Algebra-2 KAP 
-9 Research AP 
+4 English-III KAP
+5 English-Language-and-Composition AP
+6 Algebra-2 KAP
+7 Research AP

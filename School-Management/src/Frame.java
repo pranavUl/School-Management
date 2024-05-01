@@ -13,7 +13,7 @@ public class Frame {
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
-        importData();
+        exportData();
 
         JFrame frame = new JFrame("SCHOOL MANAGEMENT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1553,6 +1553,13 @@ public class Frame {
             }
         });
 
+        exportDataSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportData();
+            }
+        });
+
 
         frame.getContentPane().add(teacherPanel);
         frame.getContentPane().add(studentPanel);
@@ -1564,14 +1571,97 @@ public class Frame {
     }
 
 
-    public static void importData() {
+    public static void exportData() {
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/school_management","root","");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/school_manager","root","ktPu4082");
 
             Statement statement = con.createStatement();
 
+            ArrayList<Object> students = new ArrayList<Object>();
+            try {
+                File file = new File("students.txt");
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String s = reader.nextLine();
+                    students.add(new Student((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                }
+                reader.close();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            for (Object s : students) {
+                statement.executeUpdate("INSERT INTO student (studentID, studentFirstName, studentLastName) VALUES (\"" + ((Student) s).getId() + "\", \"" + ((Student) s).getFirstName() + "\", \"" + ((Student) s).getLastName() + "\")");
+            }
+
+            ArrayList<Object> courses = new ArrayList<Object>();
+            try {
+                File file = new File("courses.txt");
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String s = reader.nextLine();
+                    courses.add(new Course((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                }
+                reader.close();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            for (Object c : courses) {
+                statement.executeUpdate("INSERT INTO course (courseID, courseName, courseType) VALUES (\"" + ((Course) c).getId() + "\", \"" + ((Course) c).getName() + "\", \"" + ((Course) c).getType() + "\")");
+            }
+
+            ArrayList<Object> teachers = new ArrayList<Object>();
+            try {
+                File file = new File("teachers.txt");
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String s = reader.nextLine();
+                    teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                }
+                reader.close();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            for (Object t : teachers) {
+                statement.executeUpdate("INSERT INTO teacher (teacherID, teacherFirstName, teacherLastName) VALUES (\"" + ((Teacher) t).getId() + "\", \"" + ((Teacher) t).getFirstName() + "\", \"" + ((Teacher) t).getLastName() + "\")");
+            }
+
+            ArrayList<Object> sections = new ArrayList<Object>();
+            try {
+                File file = new File("sections.txt");
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String s = reader.nextLine();
+                    sections.add((new Section((Integer.parseInt(s.split(" ")[0])), Integer.parseInt(s.split(" ")[1]), Integer.parseInt(s.split(" ")[3]))));
+                }
+                reader.close();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            for (Object sec : sections) {
+                statement.executeUpdate("INSERT INTO section (sectionID, courseID, teacherID) VALUES (\"" + ((Section) sec).getId() + "\", \"" + ((Section) sec).getcID() + "\", \"" + ((Section) sec).gettID() + "\")");
+            }
+
+            try {
+                File file = new File("enrollment.txt");
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String s = reader.nextLine();
+                    statement.executeUpdate("INSERT INTO enrollment (sectionID, studentID) VALUES (\"" + Integer.parseInt(s.split(" ")[0]) + "\", \"" + Integer.parseInt(s.split(" ")[1]) + "\")");
+                }
+                reader.close();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
 
             con.close();
         }
