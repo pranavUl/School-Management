@@ -13,7 +13,47 @@ public class Frame {
     
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
 
-        exportData();
+        //CREATE TABLES
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/school_manager","root","ktPu4082");
+
+            Statement statement = con.createStatement();
+
+            statement.execute("CREATE TABLE IF NOT EXISTS `course` (\n" +
+                    "  `courseID` INT NOT NULL,\n" +
+                    "  `courseName` TEXT(1000) NOT NULL,\n" +
+                    "  `courseType` TEXT(1000) NOT NULL,\n" +
+                    "  PRIMARY KEY (`courseID`));");
+
+            statement.execute("CREATE TABLE IF NOT EXISTS `teacher` (\n" +
+                    "  `teacherID` INT NOT NULL,\n" +
+                    "  `teacherFirstName` TEXT(1000) NOT NULL,\n" +
+                    "  `teacherLastName` TEXT(1000) NOT NULL,\n" +
+                    "  PRIMARY KEY (`teacherID`));");
+
+            statement.execute("CREATE TABLE IF NOT EXISTS `section` (\n" +
+                    "  `sectionID` INT NOT NULL,\n" +
+                    "  `courseID` INT NOT NULL,\n" +
+                    "  `teacherID` INT NOT NULL,\n" +
+                    "  PRIMARY KEY (`sectionID`));");
+
+            statement.execute("CREATE TABLE IF NOT EXISTS `enrollment` (\n" +
+                    "  `sectionID` INT NOT NULL,\n" +
+                    "  `studentID` INT NOT NULL);");
+
+            statement.execute("CREATE TABLE IF NOT EXISTS `student` (\n" +
+                    "  `studentID` INT NOT NULL,\n" +
+                    "  `studentFirstName` TEXT(1000) NOT NULL,\n" +
+                    "  `studentLastName` TEXT(1000) NOT NULL,\n" +
+                    "  PRIMARY KEY (`studentID`));");
+
+            con.close();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+
 
         JFrame frame = new JFrame("SCHOOL MANAGEMENT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1557,6 +1597,26 @@ public class Frame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 exportData();
+                JOptionPane.showMessageDialog(frame, "data successfully exported to sql thing", "success!", JOptionPane.INFORMATION_MESSAGE);
+
+            }
+        });
+
+        importDataSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                exportData();
+                JOptionPane.showMessageDialog(frame, "data successfully imported from sql thing", "success!", JOptionPane.INFORMATION_MESSAGE);
+
+            }
+        });
+
+        purgeSelect.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                purgeData();
+                JOptionPane.showMessageDialog(frame, "all data was purged from the sql thing", "success!", JOptionPane.INFORMATION_MESSAGE);
+
             }
         });
 
@@ -1567,6 +1627,28 @@ public class Frame {
         frame.getContentPane().add(sectionPanel);
         frame.getContentPane().add(aboutPanel);
         frame.setVisible(true);
+
+    }
+
+    public static void purgeData() {
+
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/school_manager","root","ktPu4082");
+
+            Statement statement = con.createStatement();
+
+            statement.executeUpdate("DELETE FROM teacher;");
+            statement.executeUpdate("DELETE FROM student;");
+            statement.executeUpdate("DELETE FROM section;");
+            statement.executeUpdate("DELETE FROM course;");
+            statement.executeUpdate("DELETE FROM enrollment;");
+
+            con.close();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
 
     }
 
@@ -1670,4 +1752,103 @@ public class Frame {
         }
     }
 
+    public static void importData() {
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/school_manager","root","ktPu4082");
+
+            Statement statement = con.createStatement();
+
+            ResultSet rs = statement.executeQuery("SELECT * FROM student");
+            
+
+            con.close();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
+    }
+
 }
+
+/*
+
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema school_manager
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema school_manager
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `school_manager` DEFAULT CHARACTER SET utf8 ;
+USE `school_manager` ;
+
+-- -----------------------------------------------------
+-- Table `school_manager`.`course`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `school_manager`.`course` (
+  `courseID` INT NOT NULL,
+  `courseName` TEXT(1000) NOT NULL,
+  `courseType` TEXT(1000) NOT NULL,
+  PRIMARY KEY (`courseID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `school_manager`.`teacher`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `school_manager`.`teacher` (
+  `teacherID` INT NOT NULL,
+  `teacherFirstName` TEXT(1000) NOT NULL,
+  `teacherLastName` TEXT(1000) NOT NULL,
+  PRIMARY KEY (`teacherID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `school_manager`.`section`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `school_manager`.`section` (
+  `sectionID` INT NOT NULL,
+  `courseID` INT NOT NULL,
+  `teacherID` INT NOT NULL,
+  PRIMARY KEY (`sectionID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `school_manager`.`student`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `school_manager`.`student` (
+  `studentID` INT NOT NULL,
+  `studentFirstName` TEXT(1000) NOT NULL,
+  `studentLastName` TEXT(1000) NOT NULL,
+  PRIMARY KEY (`studentID`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `school_manager`.`enrollment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `school_manager`.`enrollment` (
+  `sectionID` INT NOT NULL,
+  `studentID` INT NOT NULL)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
+
+
+
+
+*/
+
+
