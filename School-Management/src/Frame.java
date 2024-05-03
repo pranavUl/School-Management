@@ -1650,6 +1650,56 @@ public class Frame {
             System.out.println(e);
         }
 
+        try {
+            File file = new File("courses.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            File file = new File("enrollment.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            File file = new File("sections.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            File file = new File("teachers.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("-1 No Teacher\n");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            File file = new File("students.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("-1 No Teacher\n");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
     }
 
 
@@ -1762,6 +1812,7 @@ public class Frame {
             ResultSet rs = statement.executeQuery("SELECT * FROM student");
             
 
+
             con.close();
         }
         catch(Exception e) {
@@ -1850,5 +1901,3 @@ SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
 
 
 */
-
-
