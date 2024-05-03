@@ -1,12 +1,11 @@
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Objects;
-
-
-//METHODS TO ADD: editRow(int row, Object[] new), updateTable(ArrayList<Object> arraylist, String[] columnNames)
-
-
 
 public class ScrollingTable extends JTable {
     
@@ -107,8 +106,34 @@ public class ScrollingTable extends JTable {
             model.insertRow(model.getRowCount(), r);
         }
 
+        /*model.addTableModelListener(new TableModelListener() {
+            @Override
+            public void tableChanged(TableModelEvent tableModelEvent) {
+                if (table.isEditing()) {
+                    
+                }
+            }
+
+        });*/
+
         this.table = new JTable(model);
         this.sp = new JScrollPane(table);
+
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() { //method copy and pasted from a stack overflow response
+            public void valueChanged(ListSelectionEvent e) {
+                if (e.getValueIsAdjusting()) {
+                    return;
+                }
+                int selectedRow = table.convertRowIndexToModel(table.getSelectedRow());
+                int selectedColumn = table.convertColumnIndexToModel(table.getSelectedColumn());
+    
+                Object selectedId = model.getValueAt(selectedRow, selectedColumn);
+
+                System.out.println(selectedId);
+
+                model.setValueAt(selectedId, selectedRow, selectedColumn);
+            }
+        });
     }
 
     public JTable getTable() {
