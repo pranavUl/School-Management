@@ -4,6 +4,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -106,20 +108,10 @@ public class ScrollingTable extends JTable {
             model.insertRow(model.getRowCount(), r);
         }
 
-        /*model.addTableModelListener(new TableModelListener() {
-            @Override
-            public void tableChanged(TableModelEvent tableModelEvent) {
-                if (table.isEditing()) {
-                    
-                }
-            }
-
-        });*/
-
         this.table = new JTable(model);
         this.sp = new JScrollPane(table);
 
-        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() { //method copy and pasted from a stack overflow response
+        /*table.getSelectionModel().addListSelectionListener(new ListSelectionListener() { //method copy and pasted from a stack overflow response
             public void valueChanged(ListSelectionEvent e) {
                 if (e.getValueIsAdjusting()) {
                     return;
@@ -132,8 +124,33 @@ public class ScrollingTable extends JTable {
                 System.out.println(selectedId);
 
                 model.setValueAt(selectedId, selectedRow, selectedColumn);
+
+                if (model.getColumnName(0).contains("Teacher")) {
+                    try {
+                        File file = new File("teachers.txt");
+                        FileWriter fw = new FileWriter(file, false);
+                        for (int i = 0; i < model.getRowCount(); i++) {
+                            //fw.write(((Teacher) c).getId() + " " + ((Teacher) c).getFirstName() + " " + ((Teacher) c).getLastName() + " " + "\n");
+                            fw.write(String.valueOf(model.getValueAt(i, 0)) + " " + model.getValueAt(i, 1) + " " + model.getValueAt(i, 2) + "\n");
+                        }
+                        fw.close();
+                    }
+                    catch (Exception ex){
+                        ex.printStackTrace();
+                    }
+                }
+                else if (model.getColumnName(0).contains("Section") && model.getColumnName(1).contains("Course ID")) {
+
+                }
+                else if (model.getColumnName(0).contains("Student")) {
+
+                }
+                else if (model.getColumnName(0).contains("Course")) {
+
+                }
+
             }
-        });
+        });*/
     }
 
     public JTable getTable() {

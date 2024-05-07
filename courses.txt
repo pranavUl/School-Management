@@ -1,0 +1,13 @@
+1 Compuer Science Into 0
+2 Compuer Science I 0
+3 Compuer Science AP A 2
+4 Compuer Science AP
+Principles 2
+5 Compuer Science 2 1
+6 Compuer Science Game
+Development 1
+7 Compuer Science Data
+Structures 1
+8 Compuer Science AWS 1
+9 Compuer Science Independent
+Study 1

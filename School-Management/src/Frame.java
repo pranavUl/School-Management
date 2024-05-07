@@ -21,32 +21,28 @@ public class Frame {
             Statement statement = con.createStatement();
 
             statement.execute("CREATE TABLE IF NOT EXISTS `course` (\n" +
-                    "  `courseID` INT NOT NULL,\n" +
-                    "  `courseName` TEXT(1000) NOT NULL,\n" +
-                    "  `courseType` TEXT(1000) NOT NULL,\n" +
-                    "  PRIMARY KEY (`courseID`));");
+                    "  `course_id` INT NOT NULL,\n" +
+                    "  `title` TEXT(1000) NOT NULL,\n" +
+                    "  `type` TEXT(1000) NOT NULL);");
 
             statement.execute("CREATE TABLE IF NOT EXISTS `teacher` (\n" +
-                    "  `teacherID` INT NOT NULL,\n" +
-                    "  `teacherFirstName` TEXT(1000) NOT NULL,\n" +
-                    "  `teacherLastName` TEXT(1000) NOT NULL,\n" +
-                    "  PRIMARY KEY (`teacherID`));");
+                    "  `teacher_id` INT NOT NULL,\n" +
+                    "  `first_name` TEXT(1000) NOT NULL,\n" +
+                    "  `last_name` TEXT(1000) NOT NULL);");
 
             statement.execute("CREATE TABLE IF NOT EXISTS `section` (\n" +
-                    "  `sectionID` INT NOT NULL,\n" +
-                    "  `courseID` INT NOT NULL,\n" +
-                    "  `teacherID` INT NOT NULL,\n" +
-                    "  PRIMARY KEY (`sectionID`));");
+                    "  `section_id` INT NOT NULL,\n" +
+                    "  `course_id` INT NOT NULL,\n" +
+                    "  `teacher_id` INT NOT NULL);");
 
             statement.execute("CREATE TABLE IF NOT EXISTS `enrollment` (\n" +
-                    "  `sectionID` INT NOT NULL,\n" +
-                    "  `studentID` INT NOT NULL);");
+                    "  `section_id` INT NOT NULL,\n" +
+                    "  `student_id` INT NOT NULL);");
 
             statement.execute("CREATE TABLE IF NOT EXISTS `student` (\n" +
-                    "  `studentID` INT NOT NULL,\n" +
-                    "  `studentFirstName` TEXT(1000) NOT NULL,\n" +
-                    "  `studentLastName` TEXT(1000) NOT NULL,\n" +
-                    "  PRIMARY KEY (`studentID`));");
+                    "  `student_id` INT NOT NULL,\n" +
+                    "  `first_name` TEXT(1000) NOT NULL,\n" +
+                    "  `last_name` TEXT(1000) NOT NULL);");
 
             con.close();
         }
@@ -1605,7 +1601,7 @@ public class Frame {
         importDataSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                exportData();
+                importData();
                 JOptionPane.showMessageDialog(frame, "data successfully imported from sql thing", "success!", JOptionPane.INFORMATION_MESSAGE);
 
             }
@@ -1710,6 +1706,12 @@ public class Frame {
 
             Statement statement = con.createStatement();
 
+            statement.executeUpdate("DELETE FROM teacher;");
+            statement.executeUpdate("DELETE FROM student;");
+            statement.executeUpdate("DELETE FROM section;");
+            statement.executeUpdate("DELETE FROM course;");
+            statement.executeUpdate("DELETE FROM enrollment;");
+
             ArrayList<Object> students = new ArrayList<Object>();
             try {
                 File file = new File("students.txt");
@@ -1725,7 +1727,7 @@ public class Frame {
             }
 
             for (Object s : students) {
-                statement.executeUpdate("INSERT INTO student (studentID, studentFirstName, studentLastName) VALUES (\"" + ((Student) s).getId() + "\", \"" + ((Student) s).getFirstName() + "\", \"" + ((Student) s).getLastName() + "\")");
+                statement.executeUpdate("INSERT INTO student (student_id, first_name, last_name) VALUES (\"" + ((Student) s).getId() + "\", \"" + ((Student) s).getFirstName() + "\", \"" + ((Student) s).getLastName() + "\")");
             }
 
             ArrayList<Object> courses = new ArrayList<Object>();
@@ -1743,7 +1745,7 @@ public class Frame {
             }
 
             for (Object c : courses) {
-                statement.executeUpdate("INSERT INTO course (courseID, courseName, courseType) VALUES (\"" + ((Course) c).getId() + "\", \"" + ((Course) c).getName() + "\", \"" + ((Course) c).getType() + "\")");
+                statement.executeUpdate("INSERT INTO course (course_id, title, type) VALUES (\"" + ((Course) c).getId() + "\", \"" + ((Course) c).getName() + "\", \"" + ((Course) c).getType() + "\")");
             }
 
             ArrayList<Object> teachers = new ArrayList<Object>();
@@ -1761,7 +1763,7 @@ public class Frame {
             }
 
             for (Object t : teachers) {
-                statement.executeUpdate("INSERT INTO teacher (teacherID, teacherFirstName, teacherLastName) VALUES (\"" + ((Teacher) t).getId() + "\", \"" + ((Teacher) t).getFirstName() + "\", \"" + ((Teacher) t).getLastName() + "\")");
+                statement.executeUpdate("INSERT INTO teacher (teacher_id, first_name, last_name) VALUES (\"" + ((Teacher) t).getId() + "\", \"" + ((Teacher) t).getFirstName() + "\", \"" + ((Teacher) t).getLastName() + "\")");
             }
 
             ArrayList<Object> sections = new ArrayList<Object>();
@@ -1779,7 +1781,7 @@ public class Frame {
             }
 
             for (Object sec : sections) {
-                statement.executeUpdate("INSERT INTO section (sectionID, courseID, teacherID) VALUES (\"" + ((Section) sec).getId() + "\", \"" + ((Section) sec).getcID() + "\", \"" + ((Section) sec).gettID() + "\")");
+                statement.executeUpdate("INSERT INTO section (section_id, course_id, teacher_id) VALUES (\"" + ((Section) sec).getId() + "\", \"" + ((Section) sec).getcID() + "\", \"" + ((Section) sec).gettID() + "\")");
             }
 
             try {
@@ -1787,7 +1789,7 @@ public class Frame {
                 Scanner reader = new Scanner(file);
                 while (reader.hasNextLine()) {
                     String s = reader.nextLine();
-                    statement.executeUpdate("INSERT INTO enrollment (sectionID, studentID) VALUES (\"" + Integer.parseInt(s.split(" ")[0]) + "\", \"" + Integer.parseInt(s.split(" ")[1]) + "\")");
+                    statement.executeUpdate("INSERT INTO enrollment (section_id, student_id) VALUES (\"" + Integer.parseInt(s.split(" ")[0]) + "\", \"" + Integer.parseInt(s.split(" ")[1]) + "\")");
                 }
                 reader.close();
             }
@@ -1803,6 +1805,57 @@ public class Frame {
     }
 
     public static void importData() {
+
+        try {
+            File file = new File("courses.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            File file = new File("enrollment.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            File file = new File("sections.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            File file = new File("teachers.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("-1 No Teacher\n");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
+        try {
+            File file = new File("students.txt");
+            FileWriter fw = new FileWriter(file, false);
+            fw.write("-1 No Teacher\n");
+            fw.close();
+        }
+        catch (Exception ex){
+            ex.printStackTrace();
+        }
+
         try{
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/school_manager","root","ktPu4082");
@@ -1810,94 +1863,134 @@ public class Frame {
             Statement statement = con.createStatement();
 
             ResultSet rs = statement.executeQuery("SELECT * FROM student");
-            
+            try {
+                File file = new File("students.txt");
+                FileWriter fw = new FileWriter(file, false);
+                while (rs != null && rs.next()) {
+                    fw.write(rs.getInt("student_id") + " " + rs.getString("first_name") + " " + rs.getString("last_name") + "\n");
+                }
+                fw.close();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
 
+            rs = statement.executeQuery("SELECT * FROM teacher");
+            try {
+                File file = new File("teachers.txt");
+                FileWriter fw = new FileWriter(file, false);
+                while (rs != null && rs.next()) {
+                    fw.write(rs.getInt("teacher_id") + " " + rs.getString("first_name") + " " + rs.getString("last_name") + "\n");
+                }
+                fw.close();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+            rs = statement.executeQuery("SELECT * FROM course");
+            try {
+                File file = new File("courses.txt");
+                FileWriter fw = new FileWriter(file, false);
+                while (rs != null && rs.next()) {
+                    fw.write(rs.getInt("course_id") + " " + rs.getString("title") + " " + rs.getString("type") + "\n");
+                }
+                fw.close();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+            rs = statement.executeQuery("SELECT * FROM enrollment");
+            try {
+                File file = new File("enrollment.txt");
+                FileWriter fw = new FileWriter(file, false);
+                while (rs != null && rs.next()) {
+                    fw.write(rs.getInt("section_id") + " " + rs.getInt("student_id") + "\n");
+                }
+                fw.close();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+            ArrayList<Object> courses = new ArrayList<Object>();
+            try {
+                File file = new File("courses.txt");
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String s = reader.nextLine();
+                    courses.add(new Course((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                }
+                reader.close();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            ArrayList<Object> teachers = new ArrayList<Object>();
+            try {
+                File file = new File("teachers.txt");
+                Scanner reader = new Scanner(file);
+                while (reader.hasNextLine()) {
+                    String s = reader.nextLine();
+                    teachers.add(new Teacher((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                }
+                reader.close();
+            }
+            catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            ArrayList<Object> sections = new ArrayList<Object>();
+            rs = statement.executeQuery("SELECT * FROM section");
+            try {
+                while (rs != null && rs.next()) {
+                    sections.add(new Section(rs.getInt("section_id"), rs.getInt("course_id"), rs.getInt("teacher_id")));
+                }
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+            for (Object s : sections) {
+                for (Object c : courses) {
+                    if (((Section) s).getcID() == ((Course) c).getId()) {
+                        ((Section) s).setCourse(((Course) c).getName());
+                        break;
+                    }
+                }
+            }
+
+            for (Object s : sections) {
+                for (Object t : teachers) {
+                    if (((Section) s).gettID() == ((Teacher) t).getId()) {
+                        ((Section) s).settFirstName(((Teacher) t).getFirstName());
+                        ((Section) s).settLastName(((Teacher) t).getLastName());
+                        break;
+                    }
+                }
+            }
+
+            try {
+                File file = new File("sections.txt");
+                FileWriter fw = new FileWriter(file, false);
+                for (Object s : sections) {
+                    fw.write(((Section) s).getId() + " " + ((Section) s).getcID() + " " + ((Section) s).getCourse() + " " + ((Section) s).gettID() + " " + ((Section) s).gettFirstName() + " " + ((Section) s).gettLastName() + "\n");
+                }
+                fw.close();
+            }
+            catch (Exception ex){
+                ex.printStackTrace();
+            }
 
             con.close();
         }
         catch(Exception e) {
             System.out.println(e);
         }
+
+
     }
 
 }
-
-/*
-
--- MySQL Workbench Forward Engineering
-
-SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
-SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
-SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
-
--- -----------------------------------------------------
--- Schema school_manager
--- -----------------------------------------------------
-
--- -----------------------------------------------------
--- Schema school_manager
--- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `school_manager` DEFAULT CHARACTER SET utf8 ;
-USE `school_manager` ;
-
--- -----------------------------------------------------
--- Table `school_manager`.`course`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `school_manager`.`course` (
-  `courseID` INT NOT NULL,
-  `courseName` TEXT(1000) NOT NULL,
-  `courseType` TEXT(1000) NOT NULL,
-  PRIMARY KEY (`courseID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `school_manager`.`teacher`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `school_manager`.`teacher` (
-  `teacherID` INT NOT NULL,
-  `teacherFirstName` TEXT(1000) NOT NULL,
-  `teacherLastName` TEXT(1000) NOT NULL,
-  PRIMARY KEY (`teacherID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `school_manager`.`section`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `school_manager`.`section` (
-  `sectionID` INT NOT NULL,
-  `courseID` INT NOT NULL,
-  `teacherID` INT NOT NULL,
-  PRIMARY KEY (`sectionID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `school_manager`.`student`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `school_manager`.`student` (
-  `studentID` INT NOT NULL,
-  `studentFirstName` TEXT(1000) NOT NULL,
-  `studentLastName` TEXT(1000) NOT NULL,
-  PRIMARY KEY (`studentID`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `school_manager`.`enrollment`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `school_manager`.`enrollment` (
-  `sectionID` INT NOT NULL,
-  `studentID` INT NOT NULL)
-ENGINE = InnoDB;
-
-
-SET SQL_MODE=@OLD_SQL_MODE;
-SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
-SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
-
-
-
-*/
