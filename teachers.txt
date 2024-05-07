@@ -1,6 +1,5 @@
--1 Teacher No
-1 Jason Tully
-2 Sarah Bauguss
-3 Bryan Johnson
-4 Annette Prewitt
-5 Nicole Sadefur
+-1 Teacher No 
+2 Sarah Bauguss 
+3 Bryan Johnson 
+4 Annette Prewitt 
+5 Nicole Sadefur 

@@ -1577,11 +1577,11 @@ public class Frame {
         aboutSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                aboutPanel.setVisible(true);
                 teacherPanel.setVisible(false);
                 sectionPanel.setVisible(false);
                 coursePanel.setVisible(false);
                 studentPanel.setVisible(false);
-                aboutPanel.setVisible(true);
 
                 JLabel versionsAndMakes = new JLabel("school version 4 | created by pranav ullas");
                 versionsAndMakes.setBounds(400, 450, 200, 50);
@@ -1893,7 +1893,16 @@ public class Frame {
                 File file = new File("courses.txt");
                 FileWriter fw = new FileWriter(file, false);
                 while (rs != null && rs.next()) {
-                    fw.write(rs.getInt("course_id") + " " + rs.getString("title") + " " + rs.getString("type") + "\n");
+
+                    if (rs.getInt("type") == 0) {
+                        fw.write(rs.getInt("course_id") + " " + rs.getString("title") + " " + "Academic" + "\n");
+                    }
+                    else if (rs.getInt("type") == 1) {
+                        fw.write(rs.getInt("course_id") + " " + rs.getString("title") + " " + "KAP" + "\n");
+                    }
+                    else if (rs.getInt("type") == 2) {
+                        fw.write(rs.getInt("course_id") + " " + rs.getString("title") + " " + "AP" + "\n");
+                    }
                 }
                 fw.close();
             }
@@ -1920,7 +1929,7 @@ public class Frame {
                 Scanner reader = new Scanner(file);
                 while (reader.hasNextLine()) {
                     String s = reader.nextLine();
-                    courses.add(new Course((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1], s.split(" ")[2]));
+                    courses.add(new Course((Integer.parseInt(s.split(" ")[0])), s.split(" ")[1].replace(" ", "-"), s.split(" ")[2]));
                 }
                 reader.close();
             }
