@@ -64,22 +64,22 @@ public class Frame {
         JPanel studentPanel = new JPanel();
         studentPanel.setSize(1000 ,1200);
         studentPanel.setLayout(null);
-        teacherPanel.setVisible(false);
+        studentPanel.setVisible(false);
 
         JPanel coursePanel = new JPanel();
         coursePanel.setSize(1000 ,1200);
         coursePanel.setLayout(null);
-        teacherPanel.setVisible(false);
+        coursePanel.setVisible(false);
 
         JPanel sectionPanel = new JPanel();
         sectionPanel.setSize(1000 ,1200);
         sectionPanel.setLayout(null);
-        teacherPanel.setVisible(false);
+        sectionPanel.setVisible(false);
 
         JPanel aboutPanel = new JPanel();
-        sectionPanel.setSize(1000 ,1200);
-        sectionPanel.setLayout(null);
-        teacherPanel.setVisible(false);
+        aboutPanel.setSize(1000 ,1200);
+        aboutPanel.setLayout(null);
+        aboutPanel.setVisible(false);
 
 
         //menu setup
@@ -315,8 +315,13 @@ public class Frame {
                                 }
                             }
 
-                            teachers.add(new Teacher(teachers.size() + 1, firstName.getText(), lastName.getText()));
-            
+                            if (teachers.size() == 1) {
+                                teachers.add(new Teacher(1, firstName.getText(), lastName.getText()));
+                            }
+                            else {
+                                teachers.add(new Teacher(((Teacher) teachers.get(teachers.size()-1)).getId() + 1, firstName.getText(), lastName.getText()));
+                            }
+
                             firstName.setText("");
                             lastName.setText("");
 
@@ -545,20 +550,27 @@ public class Frame {
                 JLabel firstNameLabel = new JLabel("First Name: ");
                 JTextField lastName = new JTextField("");
                 JLabel lastNameLabel = new JLabel("Last Name: ");
+                JTextField studentID = new JTextField("");
+                JLabel studentIDLabel = new JLabel("Section ID (for deletion):");
                 firstName.setBounds(650, 550, 200, 25);
                 lastName.setBounds(650, 600, 200, 25);
                 firstNameLabel.setBounds(500, 550, 125, 25);
                 lastNameLabel.setBounds(500, 600, 125, 25);
+                studentID.setBounds(650, 650, 200, 25);
+                studentIDLabel.setBounds(500, 650, 200, 25);
+
 
                 JButton add = new JButton("ADD");
                 JButton delete = new JButton("DELETE");
-                add.setBounds(500, 650, 150, 50);
-                delete.setBounds(700, 650, 150, 50);
+                add.setBounds(500, 700, 150, 50);
+                delete.setBounds(700, 700, 150, 50);
 
                 studentPanel.add(firstNameLabel);
                 studentPanel.add(firstName);
                 studentPanel.add(lastNameLabel);
                 studentPanel.add(lastName);
+                studentPanel.add(studentID);
+                studentPanel.add(studentIDLabel);
                 studentPanel.add(add);
                 studentPanel.add(delete);
 
@@ -601,8 +613,8 @@ public class Frame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
         
-                        if (firstName.getText().isEmpty() || lastName.getText().isEmpty()) {
-                            JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        if (firstName.getText().isEmpty() || lastName.getText().isEmpty() || !studentID.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(frame, "enter a full name and leave id blank", "fail!", JOptionPane.INFORMATION_MESSAGE);
                         }
                         else {
 
@@ -613,8 +625,13 @@ public class Frame {
                                 }
                             }
 
-                            students.add(new Student(students.size() + 1, firstName.getText(), lastName.getText()));
-            
+                            if (students.isEmpty()) {
+                                students.add(new Student(1, firstName.getText(), lastName.getText()));
+                            }
+                            else {
+                                students.add(new Student(((Student) students.get(students.size()-1)).getId() + 1, firstName.getText(), lastName.getText()));
+                            }
+
                             firstName.setText("");
                             lastName.setText("");
 
@@ -644,14 +661,14 @@ public class Frame {
                     @Override
                     public void actionPerformed(ActionEvent e) {
 
-                        if (firstName.getText().isEmpty() || lastName.getText().isEmpty()) {
-                            JOptionPane.showMessageDialog(frame, "enter a full name", "fail!", JOptionPane.INFORMATION_MESSAGE);
+                        if (firstName.getText().isEmpty() || lastName.getText().isEmpty() || studentID.getText().isEmpty()) {
+                            JOptionPane.showMessageDialog(frame, "enter a full name and id", "fail!", JOptionPane.INFORMATION_MESSAGE);
                         }
                         else {
 
                             boolean found = false;
                             for (int i = students.size() - 1; i >=0; i--) {
-                                if(((Student) students.get(i)).getFirstName().equals(firstName.getText()) && ((Student) students.get(i)).getLastName().equals(lastName.getText())) {
+                                if(((Student) students.get(i)).getFirstName().equals(firstName.getText()) && ((Student) students.get(i)).getLastName().equals(lastName.getText()) && ((Student) students.get(i)).getId() == Integer.parseInt(studentID.getText())) {
                                     students.remove(students.get(i));
                                     found = true;
                                 }
@@ -945,8 +962,13 @@ public class Frame {
                                     idHolder2 = ((Teacher) t).getId();
                                 }
                             }
-                            
-                            sections.add(new Section(sections.size() + 1, idHolder, idHolder2));
+
+                            if (sections.isEmpty()) {
+                                sections.add(new Section(1, idHolder, idHolder2));
+                            }
+                            else {
+                                sections.add(new Section(((Section) sections.get(sections.size()-1)).getId() + 1, idHolder, idHolder2));
+                            }
                             
                             for (Object s : sections) {
                                 for (Object c : courses) {
@@ -1451,7 +1473,13 @@ public class Frame {
                                 }
                             }
 
-                            courses.add(new Course(courses.size() + 1, dashedName, selected));
+                            if (courses.isEmpty()) {
+                                courses.add(new Course(1, dashedName, selected));
+                            }
+                            else {
+                                courses.add(new Course(((Course) courses.get(courses.size()-1)).getId() + 1, dashedName, selected));
+                            }
+
             
                             courseField.setText("");
                             acaB.setSelected(false);
@@ -1577,13 +1605,14 @@ public class Frame {
         aboutSelect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                System.out.println("aaa");
                 aboutPanel.setVisible(true);
                 teacherPanel.setVisible(false);
                 sectionPanel.setVisible(false);
                 coursePanel.setVisible(false);
                 studentPanel.setVisible(false);
 
-                JLabel versionsAndMakes = new JLabel("school version 4 | created by pranav ullas");
+                JLabel versionsAndMakes = new JLabel("school version | created by pranav ullas");
                 versionsAndMakes.setBounds(400, 450, 200, 50);
                 aboutPanel.add(versionsAndMakes);
             }
@@ -1689,7 +1718,6 @@ public class Frame {
         try {
             File file = new File("students.txt");
             FileWriter fw = new FileWriter(file, false);
-            fw.write("-1 No Teacher\n");
             fw.close();
         }
         catch (Exception ex){
@@ -1849,7 +1877,6 @@ public class Frame {
         try {
             File file = new File("students.txt");
             FileWriter fw = new FileWriter(file, false);
-            fw.write("-1 No Teacher\n");
             fw.close();
         }
         catch (Exception ex){
@@ -1879,6 +1906,7 @@ public class Frame {
             try {
                 File file = new File("teachers.txt");
                 FileWriter fw = new FileWriter(file, false);
+                fw.write("-1 No Teacher");
                 while (rs != null && rs.next()) {
                     fw.write(rs.getInt("teacher_id") + " " + rs.getString("first_name") + " " + rs.getString("last_name") + "\n");
                 }

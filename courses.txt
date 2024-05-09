@@ -1,6 +1,5 @@
-1 Compuer-Science-Into Academic 
+2 Compuer-Science-I Academic 
 3 Compuer-Science-AP-A AP 
-4 Compuer-Science-AP-Principles AP 
 5 Compuer-Science-2 KAP 
 6 Compuer-Science-Game-Development KAP 
 7 Compuer-Science-Data-Structures KAP 
